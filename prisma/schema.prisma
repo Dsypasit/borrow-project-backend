@@ -38,8 +38,8 @@ model Source {
 model Products{
   id Int @default(autoincrement()) @id
   name String
-  frequency Int
-  amount Int
+  frequency Int @default(0)
+  amount Int @default(0)
   ProductItems ProductItems[]
 }
 
