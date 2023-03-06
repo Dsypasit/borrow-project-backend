@@ -1,0 +1,155 @@
+{
+	"info": {
+		"_postman_id": "4c5d7f19-980b-4ca8-9e42-cfe608db7ee0",
+		"name": "borrow-project",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "prodcutItem",
+			"item": [
+				{
+					"name": "get",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"pm.test(\"Status test\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/productItem",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"productItem"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var item = JSON.parse(responseBody)",
+									"pm.test(\"Status test\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/productItem/{{LATEST_PRODUCT_ITEM}}",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"productItem",
+								"{{LATEST_PRODUCT_ITEM}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var expense = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"LATEST_PRODUCT_ITEM\", expense.id);",
+									"pm.test(\"Status test\", function () {",
+									"    pm.response.to.have.status(201);",
+									"    pm.environment.get(\"variable_key\");",
+									"    pm.globals.set(\"variable_key\", \"variable_value\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"serial_no\": \"1abc-1211\",\n    \"source_id\": 3,\n    \"lab_id\": 2,\n    \"products_id\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/productItem",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"productItem"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/productItem/1",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"productItem",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "products",
+			"item": [
+				{
+					"name": "get",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
