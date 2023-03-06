@@ -7,7 +7,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npx ts-node src/index.ts",
+    "seed": "npx ts-node prisma/seed.ts",
+    "migrate": "npx prisma migrate dev --name init"
   },
   "keywords": [],
   "author": "",
