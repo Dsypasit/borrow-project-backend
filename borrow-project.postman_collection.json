@@ -123,7 +123,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/productItem/1",
+							"raw": "localhost:3000/productItem/{{LATEST_PRODUCT_ITEM}}",
 							"host": [
 								"localhost"
 							],
