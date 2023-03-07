@@ -20,7 +20,7 @@ model ProductItems {
   lab_id Int
   products Products @relation(fields: [products_id], references: [id])
   products_id Int
-  transactions Transactions?
+  transactions Transactions[]
 }
 
 model Lab {
@@ -46,13 +46,21 @@ model Products{
 model Transactions {
   id Int @default(autoincrement()) @id
   productItems ProductItems @relation(fields: [productItems_id], references: [serial_no])
-  productItems_id String @unique
+  productItems_id String
   status Boolean @default(false)
-  start_date DateTime
-  end_date DateTime
+  start_date DateTime? @default(now())
+  end_date DateTime?
   deadline DateTime
   location String
-  user String
+  user User @relation(fields: [user_id], references: [id])
+  user_id Int
+}
+
+model User{
+  id Int @default(autoincrement()) @id
+  role String?
   email String
+  username String?
   phone String
+  transactions Transactions[]
 }
