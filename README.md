@@ -11,6 +11,8 @@
 ## start this project
 ```bash
 # run db first
+docker compose up -d
+npm run migrate 
 npm run start
 ```
 
