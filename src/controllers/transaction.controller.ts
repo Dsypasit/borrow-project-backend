@@ -1,5 +1,6 @@
 import { Prisma, PrismaClient } from '@prisma/client'
 import { Request, Response } from 'express';
+import { updateProductsAvailable } from '../utils/products.util'
 
 const prisma = new PrismaClient()
 
@@ -86,6 +87,7 @@ export async function createTrans(req: Request, res: Response){
         }
       }
     })
+    await updateProductsAvailable(result.productItems.products_id)
     res.status(201).json(result)
   }catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
@@ -140,9 +142,13 @@ export async function updateStatus(req: Request, res: Response){
     where: { id: Number(id) },
     data: {
       status: req.body.status,
-      end_date: req.body.status ? new Date() : null!
+      end_date: req.body.status ? new Date() : null!,
+    },
+    include: {
+      productItems: true
     }
   })
+  await updateProductsAvailable(result.productItems.products_id)
   res.json(result) 
 }
 

@@ -39,7 +39,8 @@ model Products{
   id Int @default(autoincrement()) @id
   name String @unique
   frequency Int @default(0)
-  amount Int @default(0)
+  total Int @default(0)
+  available Int @default(0)
   ProductItems ProductItems[]
 }
 
