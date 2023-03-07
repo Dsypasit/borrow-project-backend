@@ -6,7 +6,7 @@
 - nodejs v.14+
 - make (optional)
 
-... or you need to use your db. you can config at `.env` then docker is optional.
+... or you need to use your db server. you can config at `.env` then docker is optional.
 
 ## start this project
 ```bash
