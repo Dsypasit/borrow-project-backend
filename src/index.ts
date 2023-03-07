@@ -5,6 +5,7 @@ import sourceRoute from './routes/source.route'
 import productRoute from './routes/products.route'
 import productItemRoute from './routes/productItem.route'
 import transactionRoute from './routes/transaction.route'
+import userRoute from './routes/user.route'
 
 const prisma = new PrismaClient()
 const app = express()
@@ -16,6 +17,7 @@ app.use('/source', sourceRoute)
 app.use('/products', productRoute)
 app.use('/productItem', productItemRoute)
 app.use('/transaction', transactionRoute)
+app.use('/user', userRoute)
 
 app.get('/transaction', async (req, res) => {
   const users = await prisma.transactions.findMany()
