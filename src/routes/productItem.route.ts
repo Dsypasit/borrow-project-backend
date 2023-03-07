@@ -1,10 +1,11 @@
 import express from 'express'
-import { getItems, getItemById, createItem, deleteItem } from '../controllers/productItem.controller'
+import { getItems, getItemById, createItem, deleteItem, getItemByProduct } from '../controllers/productItem.controller'
 
 let route = express.Router()
 
 route.get('/', getItems)
-route.get('/:id', getItemById)
+route.get('/id/:id', getItemById)
+route.get('/products/:id', getItemByProduct)
 route.post('/', createItem)
 route.delete('/:id', deleteItem)
 

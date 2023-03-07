@@ -6,6 +6,11 @@ const prisma = new PrismaClient()
 export async function getItems(req: Request , res: Response) {
   const result = await prisma.productItems.findMany({
     include: {
+      transactions: {
+        where: {
+          status: false
+        }
+      },
       lab: true,
       source: true,
       products: true,
@@ -28,6 +33,46 @@ export async function getItemById(req: Request , res: Response) {
       id: Number(id)
     },
     include: {
+      transactions: {
+        where: {
+          status: false
+        }
+      },
+      lab: true,
+      source: true,
+      products: true,
+    }
+  }) 
+  if (result === null){
+    res.status(404).json({
+      message: `${id} not found`
+    })
+    return
+  }
+  res.json(result)
+}
+
+export async function getItemByProduct(req: Request , res: Response) {
+  const { id } = req.params
+  if (id === undefined){
+    res.json({
+      message: "get item by id error",
+    })
+    return
+  }
+
+  const result = await prisma.productItems.findMany({
+    where: {
+      products: {
+        id: Number(id)
+      }
+    },
+    include: {
+      transactions: {
+        where: {
+          status: false
+        }
+      },
       lab: true,
       source: true,
       products: true,
@@ -52,6 +97,11 @@ export async function createItem(req: Request, res: Response){
         products_id: req.body.products_id
       },
       include: {
+        transactions: {
+          where: {
+            status: false
+          }
+        },
         lab: true,
         source: true,
         products: true,
