@@ -44,3 +44,17 @@ export async function updateProductsAvailable(id: number){
     }
   })
 }
+
+
+export async function updateProductsFrequency(id: number){
+  await prisma.products.update({
+    where: {
+      id: id
+    },
+    data: {
+      frequency: {
+        increment: 1
+      }
+    }
+  })
+}
