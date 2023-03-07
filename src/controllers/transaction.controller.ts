@@ -5,6 +5,27 @@ import { updateProductsAvailable } from '../utils/products.util'
 const prisma = new PrismaClient()
 
 export async function getTrans(req: Request , res: Response) {
+  const { status } = req.query
+  if (status !== undefined && ['true', 'false'].includes(String(status))){
+    console.log(status)
+    const result = await prisma.transactions.findMany({
+      where: {
+        status: status === 'true',
+      },
+      include: {
+        user: true,
+        productItems: {
+          include: {
+            lab: true,
+            products: true,
+            source: true
+          }
+        }
+      }
+    }) 
+    res.json(result)
+    return
+  }
   const result = await prisma.transactions.findMany({
     include: {
       user: true,
