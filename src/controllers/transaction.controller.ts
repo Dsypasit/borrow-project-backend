@@ -94,8 +94,12 @@ export async function createTrans(req: Request, res: Response){
         res.json({
           message: "serial_no is duplicate, cannot create row"
         })
+        return
       }
     }
+    res.status(500).json({
+      message: e
+    })
   }
 }
 
