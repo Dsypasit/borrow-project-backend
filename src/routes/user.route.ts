@@ -1,9 +1,10 @@
 import express from 'express'
-import { getUserById, getUsers } from '../controllers/user.controller'
+import { getUserBorrowing, getUserById, getUsers } from '../controllers/user.controller'
 
 let route = express.Router()
 
 route.get('/', getUsers)
-route.get('/:id', getUserById)
+route.get('/borrowing', getUserBorrowing)
+route.get('/id/:id', getUserById)
 
 export default route
