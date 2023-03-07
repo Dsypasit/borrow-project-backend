@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "4c5d7f19-980b-4ca8-9e42-cfe608db7ee0",
+		"_postman_id": "c0a19da6-ada4-463c-b61e-0c59095fe9a8",
 		"name": "borrow-project",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -60,13 +60,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/productItem/{{LATEST_PRODUCT_ITEM}}",
+							"raw": "localhost:3000/productItem/id/{{LATEST_PRODUCT_ITEM}}",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
 								"productItem",
+								"id",
 								"{{LATEST_PRODUCT_ITEM}}"
 							]
 						}
@@ -97,7 +98,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"serial_no\": \"1abc-1211\",\n    \"source_id\": 3,\n    \"lab_id\": 2,\n    \"products_id\": 1\n}",
+							"raw": "{\n    \"serial_no\": \"test\",\n    \"source_id\": 3,\n    \"lab_id\": 2,\n    \"products_id\": 1\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -130,6 +131,46 @@
 							"port": "3000",
 							"path": [
 								"productItem",
+								"{{LATEST_PRODUCT_ITEM}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get by product",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/productItem/products/1",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"productItem",
+								"products",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get by product available",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/productItem/products/1",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"productItem",
+								"products",
 								"1"
 							]
 						}
@@ -145,7 +186,270 @@
 					"name": "get",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/products",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"products"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "transaction",
+			"item": [
+				{
+					"name": "get",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"pm.test(\"Status test\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/transaction",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"transaction"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var item = JSON.parse(responseBody)",
+									"pm.test(\"Status test\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/transaction/{{LATEST_TRANS_ITEM}}",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"transaction",
+								"{{LATEST_TRANS_ITEM}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var expense = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"LATEST_TRANS_ITEM\", expense.id);",
+									"pm.test(\"Status test\", function () {",
+									"    pm.response.to.have.status(201);",
+									"    pm.environment.get(\"variable_key\");",
+									"    pm.globals.set(\"variable_key\", \"variable_value\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"g@email.com\",\n    \"phone\": \"023173404\",\n    \"location\": \"ตึก81\",\n    \"deadline\": \"2023-09-11\",\n    \"product_item_id\": \"1abbb-bbapp\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/transaction",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"transaction"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update status",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var expense = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"LATEST_PRODUCT_ITEM\", expense.id);",
+									"pm.test(\"Status test\", function () {",
+									"    pm.response.to.have.status(201);",
+									"    pm.environment.get(\"variable_key\");",
+									"    pm.globals.set(\"variable_key\", \"variable_value\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/transaction/status/{{LATEST_TRANS_ITEM}}",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"transaction",
+								"status",
+								"{{LATEST_TRANS_ITEM}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/transaction/{{LATEST_TRANS_ITEM}}",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"transaction",
+								"{{LATEST_TRANS_ITEM}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "get",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/user",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/user/id/2",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"user",
+								"id",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get borrowing",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/user/borrowing",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"user",
+								"borrowing"
+							]
+						}
 					},
 					"response": []
 				}
