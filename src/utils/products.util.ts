@@ -1,74 +1,73 @@
-import { Prisma, PrismaClient } from '@prisma/client'
+import { PrismaClient } from '@prisma/client';
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
-export async function updateProductsTotal(id: number){
-  const total_item = await prisma.productItems.count({
+export async function updateProductsTotal(id: number) {
+  const totalItem = await prisma.productItems.count({
     where: {
       products: {
-        id: id
+        id: id,
       },
-    }
-  })
+    },
+  });
 
   await prisma.products.update({
     where: {
-      id: id
+      id: id,
     },
     data: {
-      total: total_item,
-    }
-  })
+      total: totalItem,
+    },
+  });
 }
 
-export async function updateProductsAvailable(id: number){
-  const available_item = await prisma.productItems.count({
+export async function updateProductsAvailable(id: number) {
+  const availableItem = await prisma.productItems.count({
     where: {
       products: {
-        id: id
+        id: id,
       },
       transactions: {
         every: {
-          status: true
-        }
-      }
-    }
-  })
+          status: true,
+        },
+      },
+    },
+  });
 
   await prisma.products.update({
     where: {
-      id: id
+      id: id,
     },
     data: {
-      available: available_item,
-    }
-  })
+      available: availableItem,
+    },
+  });
 }
 
-
-export async function updateProductsFrequency(id: number){
+export async function updateProductsFrequency(id: number) {
   await prisma.products.update({
     where: {
-      id: id
+      id: id,
     },
     data: {
       frequency: {
-        increment: 1
-      }
-    }
-  })
+        increment: 1,
+      },
+    },
+  });
 }
 
-export async function IsProductItemBorrowing(serial: String): Promise<Boolean>{
+export async function IsProductItemBorrowing(serial: string): Promise<boolean> {
   const result = await prisma.productItems.findFirst({
-    where:{
+    where: {
       serial_no: String(serial),
       transactions: {
         some: {
-          status: false
-        }
-      }
-    }
-  })
-  return result !== null
+          status: false,
+        },
+      },
+    },
+  });
+  return result !== null;
 }
