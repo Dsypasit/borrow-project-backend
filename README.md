@@ -1,6 +1,6 @@
 # borrow-project-backend
 
-## pre requires
+## Prerequisite
 - docker
 - docker compose
 - nodejs v.14+
