@@ -74,6 +74,25 @@ export async function getTransById(req: Request , res: Response) {
   res.json(result)
 }
 
+export async function getTransBorrowing(req: Request, res: Response){
+  const result = await prisma.transactions.findMany({
+    where: {
+      status: false
+    },
+    include: {
+      user: true,
+      productItems: {
+        include: {
+          lab: true,
+          products: true,
+          source: true
+        }
+      }
+    }
+  })
+  res.json(result)
+}
+
 export async function createTrans(req: Request, res: Response){
   try{
     let user = await prisma.user.findFirst({
