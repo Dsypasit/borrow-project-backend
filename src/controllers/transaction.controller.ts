@@ -1,6 +1,6 @@
 import { Prisma, PrismaClient } from '@prisma/client'
 import { Request, Response } from 'express';
-import { updateProductsAvailable, updateProductsFrequency } from '../utils/products.util'
+import { IsProductItemBorrowing, updateProductsAvailable, updateProductsFrequency } from '../utils/products.util'
 
 const prisma = new PrismaClient()
 
@@ -88,6 +88,14 @@ export async function createTrans(req: Request, res: Response){
           phone: req.body.phone
         }
       })
+    }
+
+    const  isBorrowing = await IsProductItemBorrowing(req.body.product_item_id)
+    if (isBorrowing){
+      res.status(400).json({
+        message: "this product iteme is borrowing"
+      })
+      return
     }
     const result = await prisma.transactions.create({
       data: {

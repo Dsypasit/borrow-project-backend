@@ -58,3 +58,17 @@ export async function updateProductsFrequency(id: number){
     }
   })
 }
+
+export async function IsProductItemBorrowing(serial: String): Promise<Boolean>{
+  const result = await prisma.productItems.findFirst({
+    where:{
+      serial_no: String(serial),
+      transactions: {
+        some: {
+          status: false
+        }
+      }
+    }
+  })
+  return result !== null
+}
