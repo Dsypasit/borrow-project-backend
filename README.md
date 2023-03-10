@@ -4,7 +4,7 @@
 - admin
 - type
 
-## pre requires
+## Prerequisite
 - docker
 - docker compose
 - nodejs v.14+

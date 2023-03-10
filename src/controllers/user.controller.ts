@@ -1,66 +1,69 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
-export async function getUsers(req: Request , res: Response) {
-  if (req.query.email){
+export async function getUsers(req: Request, res: Response) {
+  if (req.query.email) {
     const result = await prisma.user.findMany({
-      where:{
-        email: String(req.query.email)
+      where: {
+        email: String(req.query.email),
       },
       include: {
-        transactions: true
-      }
-    }) 
-    result 
-      ? res.json(result) 
-      : res.json({message: `${req.query.email} not found`})
-    return
+        transactions: true,
+      },
+    });
+
+    if (result) {
+      res.json(result);
+    } else {
+      res.json({ message: `${req.query.email} not found` });
+    }
+    return;
   }
   const labs = await prisma.user.findMany({
     include: {
-      transactions: true
-    }
-  }) 
-  res.json(labs)
+      transactions: true,
+    },
+  });
+  res.json(labs);
 }
 
-export async function getUserById(req: Request, res: Response){
-  const { id } = req.params
-  if (id === undefined){
+export async function getUserById(req: Request, res: Response) {
+  const { id } = req.params;
+  if (id === undefined) {
     res.json({
       message: "can't delete lab",
-    })
+    });
   }
 
   const result = await prisma.user.findFirst({
     where: { id: Number(id) },
     include: {
-      transactions: true
-    }
-  })
-  res.json(result)
+      transactions: true,
+    },
+  });
+  res.json(result);
 }
 
-export async function getUserBorrowing(req: Request, res: Response){
+export async function getUserBorrowing(req: Request, res: Response) {
   const result = await prisma.user.findMany({
     where: {
       transactions: {
         some: {
           status: {
-            equals: false
-          }
-        }
-      }
+            equals: false,
+          },
+        },
+      },
     },
-    include:{
+    include: {
       transactions: {
         where: {
-          status: false
-        }
-      }
-    }
-  })
-  res.json(result)
+          status: false,
+        },
+      },
+    },
+  });
+  res.json(result);
 }
