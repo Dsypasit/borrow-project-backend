@@ -239,7 +239,8 @@ GET /user/id/:id
             "user_id": 1
         }
     ]
-}```
+}
+```
 
 GET /user/borrowing
 - show คนที่ยืมของทั้งหมด
