@@ -7,7 +7,6 @@
 - transaction ใน field deadline ใช้ format  yyyy-mm-dd
 - status ของ transaction คือ การยืม-คืน โดย default คือ false
 
-<<<<<<< HEAD
 - [Lab](#Lab)
 - [Source](#Source)
 - [User](#User)
@@ -20,11 +19,6 @@
 
 [to Top](#Endpoint-ของ-backend)
 
-=======
-...ขาดตรงไหนบอกได้ครับ และแน่นอนว่ามันยังไม่เสร็จ รออัพเดทครับ
-# Lab
-
->>>>>>> 6f59496 (feat: update docs and can get borrowing by user id)
 GET /lab
 ```json
 // response
@@ -69,11 +63,8 @@ DELETE /lab/:id
 
 # Source
 
-<<<<<<< HEAD
 [to Top](#Endpoint-ของ-backend)
 
-=======
->>>>>>> 6f59496 (feat: update docs and can get borrowing by user id)
 GET /source
 ```json
 // response
@@ -108,11 +99,8 @@ DELETE /source/:id
 
 # Products
 
-<<<<<<< HEAD
 [to Top](#Endpoint-ของ-backend)
 
-=======
->>>>>>> 6f59496 (feat: update docs and can get borrowing by user id)
 GET /product
 ```json
 // response
@@ -177,11 +165,8 @@ DELETE /product/1
 
 # User
 
-<<<<<<< HEAD
 [to Top](#Endpoint-ของ-backend)
 
-=======
->>>>>>> 6f59496 (feat: update docs and can get borrowing by user id)
 GET /user
 ```json
 // response
@@ -269,12 +254,8 @@ GET /user/id/:id
             "user_id": 1
         }
     ]
-<<<<<<< HEAD
 }
 ```
-=======
-}```
->>>>>>> 6f59496 (feat: update docs and can get borrowing by user id)
 
 GET /user/borrowing
 - show คนที่ยืมของทั้งหมด
@@ -349,11 +330,8 @@ GET /user/borrowing/:id
 
 # ProductItem
 
-<<<<<<< HEAD
 [to Top](#Endpoint-ของ-backend)
 
-=======
->>>>>>> 6f59496 (feat: update docs and can get borrowing by user id)
 GET /productItem
 ```json
 // response
@@ -550,13 +528,8 @@ GET /productItem/products/:id
 ]
 ```
 
-<<<<<<< HEAD
 GET /productItem/products/available/:id
 -  show product item ที่สามารถยืมได้ โดยใช้ id ของ products
-=======
-GET /products/available/:id
--  show product item ที่สามารถยืมได้ โดยใช้ id ของ product
->>>>>>> 6f59496 (feat: update docs and can get borrowing by user id)
 ```json
 // response
 [
@@ -661,11 +634,8 @@ DELETE /productItem/:id
 
 # Transaction
 
-<<<<<<< HEAD
 [to Top](#Endpoint-ของ-backend)
 
-=======
->>>>>>> 6f59496 (feat: update docs and can get borrowing by user id)
 GET /transaction
 ```json
 // response
@@ -790,12 +760,8 @@ GET /transaction
             }
         }
     }
-<<<<<<< HEAD
 ]
 ```
-=======
-]```
->>>>>>> 6f59496 (feat: update docs and can get borrowing by user id)
 
 GET /transaction/id/:id
 ```json
