@@ -7,6 +7,8 @@
 - transaction ใน field deadline ใช้ format  yyyy-mm-dd
 - status ของ transaction คือ การยืม-คืน โดย default คือ false
 
+- [Lab](#Lab)
+
 ...ขาดตรงไหนบอกได้ครับ และแน่นอนว่ามันยังไม่เสร็จ รออัพเดทครับ
 # Lab
 
