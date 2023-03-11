@@ -528,7 +528,7 @@ GET /productItem/products/:id
 ]
 ```
 
-GET /products/available/:id
+GET /productItem/available/:id
 -  show product item ที่สามารถยืมได้ โดยใช้ id ของ product
 ```json
 // response
