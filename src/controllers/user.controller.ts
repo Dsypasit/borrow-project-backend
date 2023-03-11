@@ -15,9 +15,9 @@ export async function getUsers(req: Request, res: Response) {
     });
 
     if (result) {
-      res.json(result);
+      res.status(200).json(result);
     } else {
-      res.json({ message: `${req.query.email} not found` });
+      res.status(404).json({ message: `${req.query.email} not found` });
     }
     return;
   }
@@ -26,13 +26,13 @@ export async function getUsers(req: Request, res: Response) {
       transactions: true,
     },
   });
-  res.json(labs);
+  res.status(200).json(labs);
 }
 
 export async function getUserById(req: Request, res: Response) {
   const { id } = req.params;
   if (id === undefined) {
-    res.json({
+    res.status(400).json({
       message: "can't delete lab",
     });
   }
@@ -43,7 +43,7 @@ export async function getUserById(req: Request, res: Response) {
       transactions: true,
     },
   });
-  res.json(result);
+  res.status(200).json(result);
 }
 
 export async function getUserBorrowing(req: Request, res: Response) {
@@ -65,35 +65,5 @@ export async function getUserBorrowing(req: Request, res: Response) {
       },
     },
   });
-  res.json(result);
-}
-
-export async function getUserBorrowingById(req: Request, res: Response){
-  const { id } = req.params
-  if (id === undefined){
-    res.json({
-      message: "can't delete lab",
-    })
-  }
-
-  const result = await prisma.user.findFirst({
-    where: {
-      id: Number(id),
-      transactions: {
-        some: {
-          status: {
-            equals: false
-          }
-        }
-      }
-    },
-    include:{
-      transactions: {
-        where: {
-          status: false
-        }
-      }
-    }
-  })
-  res.json(result)
+  res.status(200).json(result);
 }
