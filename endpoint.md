@@ -760,7 +760,8 @@ GET /transaction
             }
         }
     }
-]```
+]
+```
 
 GET /transaction/id/:id
 ```json
