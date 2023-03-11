@@ -10,13 +10,14 @@
 - [Lab](#Lab)
 - [Source](#Source)
 - [User](#User)
+- [Products](#Products)
 - [ProductItem](#ProductItem)
 - [Transaction](#Transaction)
 
 ...ขาดตรงไหนบอกได้ครับ และแน่นอนว่ามันยังไม่เสร็จ รออัพเดทครับ
 # Lab
 
-[to Top](#Endpoint%20ของ%20backend)
+[to Top](#Endpoint-ของ-backend)
 
 GET /lab
 ```json
@@ -62,7 +63,7 @@ DELETE /lab/:id
 
 # Source
 
-[to Top](#Endpoint%20ของ%20backend)
+[to Top](#Endpoint-ของ-backend)
 
 GET /source
 ```json
@@ -98,7 +99,7 @@ DELETE /source/:id
 
 # Products
 
-[to Top](#Endpoint%20ของ%20backend)
+[to Top](#Endpoint-ของ-backend)
 
 GET /product
 ```json
@@ -164,7 +165,7 @@ DELETE /product/1
 
 # User
 
-[to Top](#Endpoint%20ของ%20backend)
+[to Top](#Endpoint-ของ-backend)
 
 GET /user
 ```json
@@ -329,7 +330,7 @@ GET /user/borrowing/:id
 
 # ProductItem
 
-[to Top](#Endpoint%20ของ%20backend)
+[to Top](#Endpoint-ของ-backend)
 
 GET /productItem
 ```json
@@ -633,7 +634,7 @@ DELETE /productItem/:id
 
 # Transaction
 
-[to Top](#Endpoint%20ของ%20backend)
+[to Top](#Endpoint-ของ-backend)
 
 GET /transaction
 ```json
