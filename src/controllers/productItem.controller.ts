@@ -4,17 +4,29 @@ import {
   updateProductsAvailable,
   updateProductsTotal,
 } from '../utils/products.util';
+import { queryProductItem } from '../utils/productItem.util';
 
 const prisma = new PrismaClient();
 
 export async function getItems(req: Request, res: Response) {
+  let query = queryProductItem(req.query)
+  if (query){
+    console.log(query)
+    const result = await prisma.productItems.findMany({
+      where: query,
+      include: {
+        transactions: true,
+        lab: true,
+        source: true,
+        products: true,
+      },
+    });
+    res.status(200).json(result);
+    return
+  }
   const result = await prisma.productItems.findMany({
     include: {
-      transactions: {
-        where: {
-          status: false,
-        },
-      },
+      transactions: true,
       lab: true,
       source: true,
       products: true,
