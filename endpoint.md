@@ -528,8 +528,8 @@ GET /productItem/products/:id
 ]
 ```
 
-GET /productItem/available/:id
--  show product item ที่สามารถยืมได้ โดยใช้ id ของ product
+GET /productItem/products/available/:id
+-  show product item ที่สามารถยืมได้ โดยใช้ id ของ products
 ```json
 // response
 [
