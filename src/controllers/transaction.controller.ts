@@ -27,7 +27,7 @@ export async function getTrans(req: Request, res: Response) {
         },
       },
     });
-    res.json(result);
+    res.status(200).json(result);
     return;
   }
   const result = await prisma.transaction.findMany({
@@ -42,13 +42,13 @@ export async function getTrans(req: Request, res: Response) {
       },
     },
   });
-  res.json(result);
+  res.status(200).json(result);
 }
 
 export async function getTransById(req: Request, res: Response) {
   const { id } = req.params;
   if (id === undefined) {
-    res.json({
+    res.status(400).json({
       message: 'get transaction by id error',
     });
     return;
@@ -75,7 +75,7 @@ export async function getTransById(req: Request, res: Response) {
     });
     return;
   }
-  res.json(result);
+  res.status(200).json(result);
 }
 
 export async function getTransBorrowing(req: Request, res: Response) {
@@ -94,7 +94,7 @@ export async function getTransBorrowing(req: Request, res: Response) {
       },
     },
   });
-  res.json(result);
+  res.status(200).json(result);
 }
 
 export async function createTrans(req: Request, res: Response) {
@@ -146,8 +146,8 @@ export async function createTrans(req: Request, res: Response) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
       // The .code property can be accessed in a type-safe manner
       if (e.code === 'P2002') {
-        res.json({
-          message: 'Serial number is duplicate, can not create row',
+        res.status(400).json({
+          message: 'serial_no is duplicate, cannot create row',
         });
         return;
       }
@@ -180,13 +180,13 @@ export async function checkStatus(req: Request, res: Response) {
   if (result === null) {
     res.status(404).json(`id ${id} not found`);
   }
-  res.json(result);
+  res.status(200).json(result);
 }
 
 export async function updateStatus(req: Request, res: Response) {
   const { id } = req.params;
   if (id === undefined) {
-    res.json({
+    res.status(400).json({
       message: "can't delete item",
     });
   }
@@ -202,18 +202,18 @@ export async function updateStatus(req: Request, res: Response) {
     },
   });
   await updateProductsAvailable(result.productItem.productId);
-  res.json(result);
+  res.status(200).json(result);
 }
 
 export async function deleteTrans(req: Request, res: Response) {
   const { id } = req.params;
   if (id === undefined) {
-    res.json({
+    res.status(400).json({
       message: "can't delete item",
     });
   }
   const result = await prisma.transaction.delete({
     where: { id: Number(id) },
   });
-  res.json(result);
+  res.status(200).json(result);
 }

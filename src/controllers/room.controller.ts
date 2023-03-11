@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
+import { labVaild } from '../utils/validation';
 
 const prisma = new PrismaClient();
 
@@ -10,8 +11,8 @@ export async function getRooms(req: Request, res: Response) {
 
 export async function createRoom(req: Request, res: Response) {
   if (req.body.name === undefined) {
-    res.json({
-      message: 'create room error',
+    res.status(400).json({
+      message: 'create labs error',
       body: req.body,
     });
     return;
@@ -21,18 +22,18 @@ export async function createRoom(req: Request, res: Response) {
       name: req.body.name,
     },
   });
-  res.json(result);
+  res.status(201).json(result);
 }
 
 export async function deleteRoom(req: Request, res: Response) {
   const { id } = req.params;
   if (id === undefined) {
-    res.json({
+    res.status(400).json({
       message: "can't delete lab",
     });
   }
   const result = await prisma.room.delete({
     where: { id: Number(id) },
   });
-  res.json(result);
+  res.status(200).json(result);
 }
