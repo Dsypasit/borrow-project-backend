@@ -11,8 +11,8 @@ export async function getRooms(req: Request, res: Response) {
 
 export async function createRoom(req: Request, res: Response) {
   if (req.body.name === undefined) {
-    res.json({
-      message: 'create room error',
+    res.status(400).json({
+      message: 'create labs error',
       body: req.body,
     });
     return;

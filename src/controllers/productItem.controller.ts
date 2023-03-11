@@ -9,36 +9,25 @@ import { queryProductItem } from '../utils/productItem.util';
 const prisma = new PrismaClient();
 
 export async function getItems(req: Request, res: Response) {
-<<<<<<< HEAD
   let query = queryProductItem(req.query)
   if (Object.keys(query).length !== 0){
     console.log(query)
-    const result = await prisma.productItems.findMany({
+    const result = await prisma.productItem.findMany({
       where: query,
       include: {
         transactions: true,
-        lab: true,
+        room: true,
         source: true,
-        products: true,
+        product: true,
       },
     });
     res.status(200).json(result);
     return
   }
-  const result = await prisma.productItems.findMany({
-    include: {
-      transactions: true,
-      lab: true,
-=======
   const result = await prisma.productItem.findMany({
     include: {
-      transactions: {
-        where: {
-          isReturn: false,
-        },
-      },
+      transactions: true,
       room: true,
->>>>>>> 361acc7 (refactor: rename unmeaningful variables)
       source: true,
       product: true,
     },
@@ -172,13 +161,8 @@ export async function createItem(req: Request, res: Response) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
       // The .code property can be accessed in a type-safe manner
       if (e.code === 'P2002') {
-<<<<<<< HEAD
         res.status(400).json({
           message: 'serial_no is duplicate, cannot create row',
-=======
-        res.json({
-          message: 'Serial number is duplicate, can not create row',
->>>>>>> 361acc7 (refactor: rename unmeaningful variables)
         });
       }
     }
@@ -200,6 +184,10 @@ export async function deleteItem(req: Request, res: Response) {
   res.status(200).json(result);
 =======
   await updateProductsTotal(result.productId);
+<<<<<<< HEAD
   res.json(result);
 >>>>>>> 361acc7 (refactor: rename unmeaningful variables)
+=======
+  res.status(200).json(result);
+>>>>>>> 197b4ea (fix: undo function deleted)
 }

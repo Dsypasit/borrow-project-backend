@@ -201,13 +201,8 @@ export async function updateStatus(req: Request, res: Response) {
       productItem: true,
     },
   });
-<<<<<<< HEAD
-  await updateProductsAvailable(result.productItems.products_id);
-  res.status(200).json(result);
-=======
   await updateProductsAvailable(result.productItem.productId);
-  res.json(result);
->>>>>>> 361acc7 (refactor: rename unmeaningful variables)
+  res.status(200).json(result);
 }
 
 export async function deleteTrans(req: Request, res: Response) {
