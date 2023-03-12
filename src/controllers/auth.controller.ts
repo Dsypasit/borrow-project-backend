@@ -2,8 +2,6 @@ import { Prisma, PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import crypto from 'crypto';
-import { getCurrent } from '../utils/auth.util';
 
 const prisma = new PrismaClient();
 

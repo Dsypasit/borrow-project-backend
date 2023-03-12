@@ -1,4 +1,4 @@
-export function queryProductItem(query: any): unknown {
+export function queryProductItem(query: any): object {
   const { sourceId, labId, productId } = query;
   let result = {};
   if (sourceId) {
