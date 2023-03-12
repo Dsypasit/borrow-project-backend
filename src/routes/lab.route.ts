@@ -1,10 +1,10 @@
 import express from 'express';
-import { getLabs, createLab, deleteLab } from '../controllers/room.controller';
+import { getRooms, createLab, deleteRoom } from '../controllers/room.controller';
 
 const route = express.Router();
 
-route.get('/', getLabs);
+route.get('/', getRooms);
 route.post('/', createLab);
-route.delete('/:id', deleteLab);
+route.delete('/:id', deleteRoom);
 
 export default route;

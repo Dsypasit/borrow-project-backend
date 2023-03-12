@@ -81,7 +81,7 @@ export async function getUserBorrowingById(req: Request, res: Response){
       id: Number(id),
       transactions: {
         some: {
-          status: {
+          isReturn: {
             equals: false
           }
         }
@@ -90,7 +90,7 @@ export async function getUserBorrowingById(req: Request, res: Response){
     include:{
       transactions: {
         where: {
-          status: false
+          isReturn: false
         }
       }
     }
