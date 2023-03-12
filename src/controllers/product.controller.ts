@@ -40,7 +40,7 @@ export async function createProduct(req: Request, res: Response) {
   res.status(201).json(result);
 }
 
-export async function updateFrequency(req: Request, res: Response) {
+export async function updateUsageFrequency(req: Request, res: Response) {
   const { id } = req.params;
   if (id === undefined) {
     res.status(400).json({

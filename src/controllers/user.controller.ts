@@ -46,7 +46,7 @@ export async function getUserById(req: Request, res: Response) {
   res.json(result);
 }
 
-export async function getUserBorrowing(req: Request, res: Response) {
+export async function getUsersNotReturn(req: Request, res: Response) {
   const result = await prisma.user.findMany({
     where: {
       transactions: {

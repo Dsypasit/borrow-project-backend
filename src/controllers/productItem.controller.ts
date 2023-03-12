@@ -1,8 +1,8 @@
 import { Prisma, PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
 import {
-  updateProductsAvailable,
-  updateProductsTotal,
+  updateProductAvailableAmount,
+  updateProductTotalAmount,
 } from '../utils/product.util';
 import { queryProductItem } from '../utils/productItem.util';
 
@@ -154,8 +154,8 @@ export async function createItem(req: Request, res: Response) {
         product: true,
       },
     });
-    await updateProductsAvailable(req.body.productId);
-    await updateProductsTotal(req.body.productId);
+    await updateProductAvailableAmount(req.body.productId);
+    await updateProductTotalAmount(req.body.productId);
     res.status(201).json(result);
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
@@ -179,15 +179,6 @@ export async function deleteItem(req: Request, res: Response) {
   const result = await prisma.productItem.delete({
     where: { id: Number(id) },
   });
-<<<<<<< HEAD
-  await updateProductsTotal(result.products_id);
+  await updateProductTotalAmount(result.productId);
   res.status(200).json(result);
-=======
-  await updateProductsTotal(result.productId);
-<<<<<<< HEAD
-  res.json(result);
->>>>>>> 361acc7 (refactor: rename unmeaningful variables)
-=======
-  res.status(200).json(result);
->>>>>>> 197b4ea (fix: undo function deleted)
 }
