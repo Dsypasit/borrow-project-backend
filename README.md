@@ -1,5 +1,9 @@
 # borrow-project-backend
 
+เหลือสร้าง schema และสร้าง api ของ
+- admin
+- type
+
 ## Prerequisite
 - docker
 - docker compose
