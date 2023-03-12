@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import {
   updateProductsAvailable,
   updateProductsTotal,
-} from '../utils/products.util';
+} from '../utils/product.util';
 import { queryProductItem } from '../utils/productItem.util';
 
 const prisma = new PrismaClient();

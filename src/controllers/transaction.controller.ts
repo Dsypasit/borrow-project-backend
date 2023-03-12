@@ -4,7 +4,7 @@ import {
   IsProductItemBorrowing,
   updateProductsAvailable,
   updateProductsFrequency,
-} from '../utils/products.util';
+} from '../utils/product.util';
 
 const prisma = new PrismaClient();
 

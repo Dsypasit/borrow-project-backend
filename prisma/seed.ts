@@ -2,9 +2,9 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-async function createLab() {
+async function createRoom() {
   await prisma.room.createMany({
-    data: [{ name: 'lab1' }, { name: 'lab2' }, { name: 'lab3' }],
+    data: [{ name: 'room1' }, { name: 'room2' }, { name: 'room3' }],
     skipDuplicates: true,
   });
 }
@@ -23,7 +23,7 @@ async function createProducts() {
 }
 
 async function main() {
-  await createLab();
+  await createRoom();
   await createSource();
   await createProducts();
 }
