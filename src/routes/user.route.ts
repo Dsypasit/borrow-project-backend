@@ -1,5 +1,10 @@
-import express from 'express'
-import { getUsersNotReturn,  getUserById, getUserNotReturnById, getUsers } from '../controllers/user.controller'
+import express from 'express';
+import {
+  getUsersNotReturn,
+  getUserById,
+  getUserNotReturnById,
+  getUsers,
+} from '../controllers/user.controller';
 
 const route = express.Router();
 

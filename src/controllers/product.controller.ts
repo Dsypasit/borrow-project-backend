@@ -1,3 +1,4 @@
+import sharp from 'sharp';
 import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
 import { productVaild } from '../utils/validation';
@@ -66,4 +67,31 @@ export async function deleteProduct(req: Request, res: Response) {
     where: { id: Number(id) },
   });
   res.status(200).json(result);
+}
+
+export async function uploadProductImage(req: Request, res: Response) {
+  const { id } = req.params;
+
+  try {
+    const buffer = await sharp(req.file?.buffer)
+      .resize({
+        width: 500,
+        height: 500,
+      })
+      .png()
+      .toBuffer();
+
+    const result = await prisma.product.update({
+      where: {
+        id: Number(id),
+      },
+      data: {
+        image: <string>buffer.toString('hex'),
+      },
+    });
+
+    res.status(200).json(result);
+  } catch (e: any) {
+    res.status(400).send({ error: e.message });
+  }
 }
