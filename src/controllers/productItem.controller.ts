@@ -10,7 +10,7 @@ const prisma = new PrismaClient();
 
 export async function getItems(req: Request, res: Response) {
   let query = queryProductItem(req.query)
-  if (query){
+  if (Object.keys(query).length !== 0){
     console.log(query)
     const result = await prisma.productItem.findMany({
       where: query,
