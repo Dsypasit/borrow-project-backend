@@ -4,29 +4,41 @@ import {
   updateProductAvailableAmount,
   updateProductTotalAmount,
 } from '../utils/product.util';
+import { queryProductItem } from '../utils/productItem.util';
 
 const prisma = new PrismaClient();
 
 export async function getItems(req: Request, res: Response) {
+  const query = queryProductItem(req.query);
+  if (Object.keys(query).length !== 0) {
+    console.log(query);
+    const result = await prisma.productItem.findMany({
+      where: query,
+      include: {
+        transactions: true,
+        room: true,
+        source: true,
+        product: true,
+      },
+    });
+    res.status(200).json(result);
+    return;
+  }
   const result = await prisma.productItem.findMany({
     include: {
-      transactions: {
-        where: {
-          isReturn: false,
-        },
-      },
+      transactions: true,
       room: true,
       source: true,
       product: true,
     },
   });
-  res.json(result);
+  res.status(200).json(result);
 }
 
 export async function getItemById(req: Request, res: Response) {
   const { id } = req.params;
   if (id === undefined) {
-    res.json({
+    res.status(400).json({
       message: 'get item by id error',
     });
     return;
@@ -53,12 +65,12 @@ export async function getItemById(req: Request, res: Response) {
     });
     return;
   }
-  res.json(result);
+  res.status(200).json(result);
 }
 export async function getItemByProduct(req: Request, res: Response) {
   const { id } = req.params;
   if (id === undefined) {
-    res.json({
+    res.status(400).json({
       message: 'get item by id error',
     });
     return;
@@ -87,13 +99,13 @@ export async function getItemByProduct(req: Request, res: Response) {
     });
     return;
   }
-  res.json(result);
+  res.status(200).json(result);
 }
 
 export async function getItemByProductAvailable(req: Request, res: Response) {
   const { id } = req.params;
   if (id === undefined) {
-    res.json({
+    res.status(400).json({
       message: 'get item by id error',
     });
     return;
@@ -123,7 +135,7 @@ export async function getItemByProductAvailable(req: Request, res: Response) {
     });
     return;
   }
-  res.json(result);
+  res.status(200).json(result);
 }
 
 export async function createItem(req: Request, res: Response) {
@@ -149,8 +161,8 @@ export async function createItem(req: Request, res: Response) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
       // The .code property can be accessed in a type-safe manner
       if (e.code === 'P2002') {
-        res.json({
-          message: 'Serial number is duplicate, can not create row',
+        res.status(400).json({
+          message: 'serial_no is duplicate, cannot create row',
         });
       }
     }
@@ -160,7 +172,7 @@ export async function createItem(req: Request, res: Response) {
 export async function deleteItem(req: Request, res: Response) {
   const { id } = req.params;
   if (id === undefined) {
-    res.json({
+    res.status(400).json({
       message: "can't delete item",
     });
   }
@@ -168,5 +180,5 @@ export async function deleteItem(req: Request, res: Response) {
     where: { id: Number(id) },
   });
   await updateProductTotalAmount(result.productId);
-  res.json(result);
+  res.status(200).json(result);
 }
