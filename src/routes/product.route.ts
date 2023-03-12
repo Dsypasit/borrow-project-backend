@@ -1,4 +1,10 @@
-import express from 'express';
+import { error } from 'console';
+import express, {
+  ErrorRequestHandler,
+  NextFunction,
+  Request,
+  Response,
+} from 'express';
 import multer from 'multer';
 import {
   getProducts,
@@ -29,7 +35,14 @@ route.get('/:id', getProductById);
 route.post('/', createProduct);
 route.put('/frequency/:id', updateUsageFrequency);
 route.post('/', createProduct);
-route.post('/image/:id', upload.single('product'), uploadProductImage);
+route.post(
+  '/image/:id',
+  upload.single('product'),
+  uploadProductImage,
+  (e: Error, req: Request, res: Response, next: NextFunction) => {
+    res.status(400).send({ e: e.message });
+  },
+);
 route.put('/frequency/:id', updateUsageFrequency);
 route.delete('/:id', deleteProduct);
 
