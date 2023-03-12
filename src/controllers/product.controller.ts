@@ -4,7 +4,7 @@ import { productVaild } from '../utils/validation';
 
 const prisma = new PrismaClient();
 
-export async function getProductsById(req: Request, res: Response) {
+export async function getProductById(req: Request, res: Response) {
   const { id } = req.params;
   if (id === undefined) {
     res.status(400).json({
@@ -13,28 +13,28 @@ export async function getProductsById(req: Request, res: Response) {
     return;
   }
 
-  const result = await prisma.products.findFirst({
+  const result = await prisma.product.findFirst({
     where: {
-      id: Number(id),
+      id: id,
     },
   });
   res.status(200).json(result);
 }
 
 export async function getProducts(req: Request, res: Response) {
-  const result = await prisma.products.findMany();
-  res.status(200).json(result);
+  const result = await prisma.product.findMany();
+  res.json(result);
 }
 
-export async function createProducts(req: Request, res: Response) {
-  if (!productVaild(req.body)) {
-    res.status(400).json({
-      message: 'create products error',
+export async function createProduct(req: Request, res: Response) {
+  if (req.body.name === undefined) {
+    res.json({
+      message: 'create labs error',
       body: req.body,
     });
     return;
   }
-  const result = await prisma.products.create({
+  const result = await prisma.product.create({
     data: req.body,
   });
   res.status(201).json(result);
@@ -48,9 +48,9 @@ export async function updateFrequency(req: Request, res: Response) {
     });
   }
 
-  const result = await prisma.products.update({
-    where: { id: Number(id) },
-    data: { frequency: { increment: 1 } },
+  const result = await prisma.product.update({
+    where: { id: id },
+    data: { usageFrequency: { increment: 1 } },
   });
   res.status(200).json(result);
 }
@@ -62,8 +62,8 @@ export async function deleteProduct(req: Request, res: Response) {
       message: "can't delete products",
     });
   }
-  const result = await prisma.products.delete({
-    where: { id: Number(id) },
+  const result = await prisma.product.delete({
+    where: { id: id },
   });
   res.status(200).json(result);
 }

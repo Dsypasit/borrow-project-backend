@@ -11,16 +11,16 @@ datasource db {
 }
 
 model ProductItem {
-  id            String        @id @default(auto()) @map("_id") @db.ObjectId
-  serial_no     String        @unique
-  broken_status Boolean       @default(false)
-  room          Room?         @relation(fields: [roomId], references: [id]) // ? is optional
-  roomId        String?       @db.ObjectId
-  source        Source?       @relation(fields: [sourceId], references: [id])
-  sourceId      String?       @db.ObjectId
-  product       Product       @relation(fields: [productId], references: [id])
-  productId     String        @db.ObjectId
-  transactions  Transaction[]
+  id           String        @id @default(auto()) @map("_id") @db.ObjectId
+  serialNumber String        @unique
+  isBroken     Boolean       @default(false)
+  room         Room?         @relation(fields: [roomId], references: [id]) // ? is optional
+  roomId       String?       @db.ObjectId
+  source       Source?       @relation(fields: [sourceId], references: [id])
+  sourceId     String?       @db.ObjectId
+  product      Product       @relation(fields: [productId], references: [id])
+  productId    String        @db.ObjectId
+  transactions Transaction[]
 }
 
 model Room {
@@ -36,35 +36,35 @@ model Source {
 }
 
 model Product {
-  id           String        @id @default(auto()) @map("_id") @db.ObjectId
-  name         String        @unique
-  description  String?
-  frequency    Int           @default(0)
-  total        Int           @default(0)
-  available    Int           @default(0)
-  image        String?
-  ProductItems ProductItem[]
+  id              String        @id @default(auto()) @map("_id") @db.ObjectId
+  name            String        @unique
+  description     String?
+  usageFrequency  Int           @default(0)
+  totalAmount     Int           @default(0)
+  availableAmount Int           @default(0)
+  image           String?
+  ProductItems    ProductItem[]
 }
 
 model Transaction {
-  id            String      @id @default(auto()) @map("_id") @db.ObjectId
-  status        Boolean     @default(false)
-  start_date    DateTime    @default(now())
-  end_date      DateTime?
-  update_date   DateTime    @updatedAt // Check update date
-  deadline      DateTime
-  location      String
-  productItem   ProductItem @relation(fields: [productItemId], references: [id])
-  productItemId String      @db.ObjectId
-  user          User        @relation(fields: [userId], references: [id])
-  userId        String      @db.ObjectId
+  id              String      @id @default(auto()) @map("_id") @db.ObjectId
+  isReturn        Boolean     @default(false)
+  startDate       DateTime    @default(now())
+  endDate         DateTime?
+  updateDate      DateTime    @updatedAt // Check update date
+  deadline        DateTime
+  location        String
+  productItem     ProductItem @relation(fields: [serialNumberRef], references: [serialNumber])
+  serialNumberRef String
+  user            User        @relation(fields: [userId], references: [id])
+  userId          String      @db.ObjectId
 }
 
 model User {
   id           String        @id @default(auto()) @map("_id") @db.ObjectId
   email        String
-  name         String
-  phone        String
+  username     String
+  phoneNumber  String
   transactions Transaction[]
 }
 

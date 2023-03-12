@@ -9,27 +9,16 @@ import { queryProductItem } from '../utils/productItem.util';
 const prisma = new PrismaClient();
 
 export async function getItems(req: Request, res: Response) {
-  let query = queryProductItem(req.query)
-  if (query){
-    console.log(query)
-    const result = await prisma.productItems.findMany({
-      where: query,
-      include: {
-        transactions: true,
-        lab: true,
-        source: true,
-        products: true,
-      },
-    });
-    res.status(200).json(result);
-    return
-  }
-  const result = await prisma.productItems.findMany({
+  const result = await prisma.productItem.findMany({
     include: {
-      transactions: true,
-      lab: true,
+      transactions: {
+        where: {
+          isReturn: false,
+        },
+      },
+      room: true,
       source: true,
-      products: true,
+      product: true,
     },
   });
   res.status(200).json(result);
@@ -44,19 +33,19 @@ export async function getItemById(req: Request, res: Response) {
     return;
   }
 
-  const result = await prisma.productItems.findFirst({
+  const result = await prisma.productItem.findFirst({
     where: {
-      id: Number(id),
+      id,
     },
     include: {
       transactions: {
         where: {
-          status: false,
+          isReturn: false,
         },
       },
-      lab: true,
+      room: true,
       source: true,
-      products: true,
+      product: true,
     },
   });
   if (result === null) {
@@ -76,21 +65,21 @@ export async function getItemByProduct(req: Request, res: Response) {
     return;
   }
 
-  const result = await prisma.productItems.findMany({
+  const result = await prisma.productItem.findMany({
     where: {
-      products: {
-        id: Number(id),
+      product: {
+        id,
       },
     },
     include: {
       transactions: {
         where: {
-          status: false,
+          isReturn: false,
         },
       },
-      lab: true,
+      room: true,
       source: true,
-      products: true,
+      product: true,
     },
   });
   if (result === null) {
@@ -111,22 +100,22 @@ export async function getItemByProductAvailable(req: Request, res: Response) {
     return;
   }
 
-  const result = await prisma.productItems.findMany({
+  const result = await prisma.productItem.findMany({
     where: {
-      products: {
-        id: Number(id),
+      product: {
+        id,
       },
       transactions: {
         every: {
-          status: true,
+          isReturn: true,
         },
       },
     },
     include: {
       transactions: true,
-      lab: true,
+      room: true,
       source: true,
-      products: true,
+      product: true,
     },
   });
   if (result === null) {
@@ -140,22 +129,22 @@ export async function getItemByProductAvailable(req: Request, res: Response) {
 
 export async function createItem(req: Request, res: Response) {
   try {
-    const result = await prisma.productItems.create({
+    const result = await prisma.productItem.create({
       data: {
-        serial_no: req.body.serial_no,
-        source_id: req.body.source_id,
-        lab_id: req.body.lab_id,
-        products_id: req.body.products_id,
+        serialNumber: req.body.serialNumber,
+        sourceId: req.body.sourceId,
+        roomId: req.body.roomId,
+        productId: req.body.productId,
       },
       include: {
         transactions: true,
-        lab: true,
+        room: true,
         source: true,
-        products: true,
+        product: true,
       },
     });
-    await updateProductsAvailable(req.body.products_id);
-    await updateProductsTotal(req.body.products_id);
+    await updateProductsAvailable(req.body.productId);
+    await updateProductsTotal(req.body.productId);
     res.status(201).json(result);
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
@@ -176,9 +165,9 @@ export async function deleteItem(req: Request, res: Response) {
       message: "can't delete item",
     });
   }
-  const result = await prisma.productItems.delete({
-    where: { id: Number(id) },
+  const result = await prisma.productItem.delete({
+    where: { id },
   });
-  await updateProductsTotal(result.products_id);
+  await updateProductsTotal(result.productId);
   res.status(200).json(result);
 }

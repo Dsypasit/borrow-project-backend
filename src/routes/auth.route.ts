@@ -1,13 +1,19 @@
-import express from 'express'
-import { addAdmin, deleteAdmin, getAdmin, login, updateProfile } from '../controllers/auth.controller'
-import { authMiddleware } from '../utils/auth.util'
+import express from 'express';
+import {
+  addAdmin,
+  deleteAdmin,
+  getAdmin,
+  login,
+  updateProfile,
+} from '../controllers/auth.controller';
+import { authMiddleware } from '../utils/auth.util';
 
-let route = express.Router()
+const route = express.Router();
 
-route.get('/',authMiddleware , getAdmin)
-route.post('/', login)
-route.post('/addadmin',authMiddleware , addAdmin)
-route.delete('/:id',authMiddleware , deleteAdmin)
-route.put('/', authMiddleware ,updateProfile)
+route.get('/', authMiddleware, getAdmin);
+route.post('/', login);
+route.post('/addadmin', authMiddleware, addAdmin);
+route.delete('/:id', authMiddleware, deleteAdmin);
+route.put('/', authMiddleware, updateProfile);
 
-export default route
+export default route;

@@ -33,7 +33,7 @@ export async function deleteSource(req: Request, res: Response) {
     });
   }
   const result = await prisma.source.delete({
-    where: { id: Number(id) },
+    where: { id },
   });
   res.status(200).json(result);
 }

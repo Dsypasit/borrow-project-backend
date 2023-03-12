@@ -38,7 +38,7 @@ export async function getUserById(req: Request, res: Response) {
   }
 
   const result = await prisma.user.findFirst({
-    where: { id: Number(id) },
+    where: { id },
     include: {
       transactions: true,
     },
@@ -51,7 +51,7 @@ export async function getUserBorrowing(req: Request, res: Response) {
     where: {
       transactions: {
         some: {
-          status: {
+          isReturn: {
             equals: false,
           },
         },
@@ -60,7 +60,7 @@ export async function getUserBorrowing(req: Request, res: Response) {
     include: {
       transactions: {
         where: {
-          status: false,
+          isReturn: false,
         },
       },
     },
@@ -68,32 +68,32 @@ export async function getUserBorrowing(req: Request, res: Response) {
   res.json(result);
 }
 
-export async function getUserBorrowingById(req: Request, res: Response){
-  const { id } = req.params
-  if (id === undefined){
+export async function getUserBorrowingById(req: Request, res: Response) {
+  const { id } = req.params;
+  if (id === undefined) {
     res.json({
       message: "can't delete lab",
-    })
+    });
   }
 
   const result = await prisma.user.findFirst({
     where: {
-      id: Number(id),
+      id: id,
       transactions: {
         some: {
-          status: {
-            equals: false
-          }
-        }
-      }
+          isReturn: {
+            equals: false,
+          },
+        },
+      },
     },
-    include:{
+    include: {
       transactions: {
         where: {
-          status: false
-        }
-      }
-    }
-  })
-  res.json(result)
+          isReturn: false,
+        },
+      },
+    },
+  });
+  res.json(result);
 }

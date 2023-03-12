@@ -1,60 +1,57 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from '@prisma/client';
 
-const prisma = new PrismaClient()
-
-async function main() {
-  await createLab()
-  await createSource()
-  await createProducts()
-}
+const prisma = new PrismaClient();
 
 async function createLab() {
-  let labs = ["Lab A", "Lab B", "Lab C"]
+  const labs = ['Lab A', 'Lab B', 'Lab C'];
   for (const lab of labs) {
     await prisma.room.upsert({
       where: {
-        name: lab
+        name: lab,
       },
       update: {},
       create: {
-        name: lab
-      }
+        name: lab,
+      },
     });
   }
 }
 
-async function createSource(){
-  let sources = ["center","department","personal"]
+async function createSource() {
+  const sources = ['center', 'department', 'personal'];
   for (const source of sources) {
     await prisma.source.upsert({
       where: {
-        name: source
+        name: source,
       },
       update: {},
       create: {
-        name: source
-      }
+        name: source,
+      },
     });
   }
 }
 
-async function createProducts(){
-
-  let products = ["Calculator","Telescope"]
+async function createProducts() {
+  const products = ['Calculator', 'Telescope'];
   for (const product of products) {
     await prisma.product.upsert({
       where: {
-        name: product
+        name: product,
       },
       update: {},
       create: {
-        name: product
-      }
+        name: product,
+      },
     });
   }
-  
 }
 
+async function main() {
+  await createLab();
+  await createSource();
+  await createProducts();
+}
 main()
   .catch((e) => console.error(e))
-  .finally(async () => await prisma.$disconnect())
+  .finally(() => prisma.$disconnect());
