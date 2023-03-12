@@ -201,13 +201,8 @@ export async function updateReturnStatus(req: Request, res: Response) {
       productItem: true,
     },
   });
-<<<<<<< HEAD
   await updateProductAvailableAmount(result.productItem.productId);
-  res.json(result);
-=======
-  await updateProductsAvailable(result.productItem.productId);
   res.status(200).json(result);
->>>>>>> db67ae9c3ccb6c9061601bf3809ece1b14b279ed
 }
 
 export async function deleteTransaction(req: Request, res: Response) {

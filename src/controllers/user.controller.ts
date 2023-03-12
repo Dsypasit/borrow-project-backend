@@ -68,7 +68,7 @@ export async function getUsersNotReturn(req: Request, res: Response) {
   res.json(result);
 }
 
-export async function getUserBorrowingById(req: Request, res: Response) {
+export async function getUserNotReturnById(req: Request, res: Response) {
   const { id } = req.params;
   if (id === undefined) {
     res.json({
