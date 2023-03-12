@@ -14,6 +14,8 @@
 - [ProductItem](#ProductItem)
 - [Transaction](#Transaction)
 
+**ข้อควรระวัง** : request ของ postgres จะใช้ ID เป็น integer แต่ mongo ใช้เป็น string ดังนั้นตอนส่ง request ที่เกี่ยวข้องกับ id ต้องตรวจสอบ type ด้วย
+
 ...ขาดตรงไหนบอกได้ครับ และแน่นอนว่ามันยังไม่เสร็จ รออัพเดทครับ
 
 # Lab
