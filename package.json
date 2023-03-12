@@ -8,7 +8,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npx ts-node src/index.ts",
+    "start": "npx nodemon src/index.ts",
     "seed": "npx ts-node prisma/seed.ts",
     "migrate": "npx prisma migrate dev --name init",
     "start:migrate:prod": "npm run migrate && npm run seed && npm run start"
@@ -25,6 +25,7 @@
     "eslint-config-airbnb-typescript": "^17.0.0",
     "eslint-config-prettier": "^8.7.0",
     "eslint-plugin-prettier": "^4.2.1",
+    "nodemon": "^2.0.21",
     "prettier": "^2.8.4",
     "prisma": "^4.11.0",
     "ts-node": "^10.9.1",
