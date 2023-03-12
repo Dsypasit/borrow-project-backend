@@ -1,5 +1,3 @@
-import { ProductItems } from "@prisma/client"
-
 export function queryProductItem(query: any): Object{
   const { source_id, lab_id, products_id } = query
   let result = {}
