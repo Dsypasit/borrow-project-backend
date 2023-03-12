@@ -8,35 +8,51 @@ async function main() {
   await createProducts()
 }
 
-async function createLab(){
-  await prisma.lab.createMany({
-    data: [
-      {name: "lab1"},
-      {name: "lab2"},
-      {name: "lab3"}
-    ],
-    skipDuplicates: true,
-  })
+async function createLab() {
+  let labs = ["Lab A", "Lab B", "Lab C"]
+  for (const lab of labs) {
+    await prisma.room.upsert({
+      where: {
+        name: lab
+      },
+      update: {},
+      create: {
+        name: lab
+      }
+    });
+  }
 }
 
 async function createSource(){
-  await prisma.source.createMany({
-    data: [
-      {name: "center"},
-      {name: "department"},
-      {name: "personal"}
-    ],
-    skipDuplicates: true,
-  })
+  let sources = ["center","department","personal"]
+  for (const source of sources) {
+    await prisma.source.upsert({
+      where: {
+        name: source
+      },
+      update: {},
+      create: {
+        name: source
+      }
+    });
+  }
 }
+
 async function createProducts(){
-  await prisma.products.createMany({
-    data: [
-      {name: "Calculator"},
-      {name: "Telescope"},
-    ],
-    skipDuplicates: true,
-  })
+
+  let products = ["Calculator","Telescope"]
+  for (const product of products) {
+    await prisma.product.upsert({
+      where: {
+        name: product
+      },
+      update: {},
+      create: {
+        name: product
+      }
+    });
+  }
+  
 }
 
 main()

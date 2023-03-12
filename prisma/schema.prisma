@@ -6,62 +6,73 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
-model ProductItems {
-  id            Int            @id @default(autoincrement())
-  serial_no     String         @unique
-  broken_status Boolean        @default(false)
-  source        Source         @relation(fields: [source_id], references: [id])
-  source_id     Int
-  lab           Lab            @relation(fields: [lab_id], references: [id])
-  lab_id        Int
-  products      Products       @relation(fields: [products_id], references: [id])
-  products_id   Int
-  transactions  Transactions[]
+model ProductItem {
+  id            String        @id @default(auto()) @map("_id") @db.ObjectId
+  serial_no     String        @unique
+  broken_status Boolean       @default(false)
+  room          Room?         @relation(fields: [roomId], references: [id]) // ? is optional
+  roomId        String?       @db.ObjectId
+  source        Source?       @relation(fields: [sourceId], references: [id])
+  sourceId      String?       @db.ObjectId
+  product       Product       @relation(fields: [productId], references: [id])
+  productId     String        @db.ObjectId
+  transactions  Transaction[]
 }
 
-model Lab {
-  id           Int            @id @default(autoincrement())
-  name         String         @unique
-  ProductItems ProductItems[]
+model Room {
+  id           String        @id @default(auto()) @map("_id") @db.ObjectId
+  name         String        @unique
+  ProductItems ProductItem[]
 }
 
 model Source {
-  id           Int            @id @default(autoincrement())
-  name         String         @unique
-  ProductItems ProductItems[]
+  id           String        @id @default(auto()) @map("_id") @db.ObjectId
+  name         String        @unique
+  ProductItems ProductItem[]
 }
 
-model Products {
-  id           Int            @id @default(autoincrement())
-  name         String         @unique
-  frequency    Int            @default(0)
-  total        Int            @default(0)
-  available    Int            @default(0)
-  ProductItems ProductItems[]
+model Product {
+  id           String        @id @default(auto()) @map("_id") @db.ObjectId
+  name         String        @unique
+  description  String?
+  frequency    Int           @default(0)
+  total        Int           @default(0)
+  available    Int           @default(0)
+  image        String?
+  ProductItems ProductItem[]
 }
 
-model Transactions {
-  id              Int          @id @default(autoincrement())
-  productItems    ProductItems @relation(fields: [productItems_id], references: [serial_no])
-  productItems_id String
-  status          Boolean      @default(false)
-  start_date      DateTime?    @default(now())
-  end_date        DateTime?
-  deadline        DateTime
-  location        String
-  user            User         @relation(fields: [user_id], references: [id])
-  user_id         Int
+model Transaction {
+  id            String      @id @default(auto()) @map("_id") @db.ObjectId
+  status        Boolean     @default(false)
+  start_date    DateTime    @default(now())
+  end_date      DateTime?
+  update_date   DateTime    @updatedAt // Check update date
+  deadline      DateTime
+  location      String
+  productItem   ProductItem @relation(fields: [productItemId], references: [id])
+  productItemId String      @db.ObjectId
+  user          User        @relation(fields: [userId], references: [id])
+  userId        String      @db.ObjectId
 }
 
 model User {
-  id           Int            @id @default(autoincrement())
-  role         String?
+  id           String        @id @default(auto()) @map("_id") @db.ObjectId
   email        String
-  username     String?
+  name         String
   phone        String
-  transactions Transactions[]
+  transactions Transaction[]
+}
+
+model Admin {
+  id       String  @id @default(auto()) @map("_id") @db.ObjectId
+  name     String
+  role     String  @default("Staff")
+  email    String  @unique
+  password String
+  phone    String?
 }
