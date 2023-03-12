@@ -51,7 +51,7 @@ export async function getUserBorrowing(req: Request, res: Response) {
     where: {
       transactions: {
         some: {
-          status: {
+          isReturn: {
             equals: false,
           },
         },
@@ -60,7 +60,7 @@ export async function getUserBorrowing(req: Request, res: Response) {
     include: {
       transactions: {
         where: {
-          status: false,
+          isReturn: false,
         },
       },
     },

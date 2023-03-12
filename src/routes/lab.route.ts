@@ -1,5 +1,5 @@
 import express from 'express';
-import { getLabs, createLab, deleteLab } from '../controllers/lab.controller';
+import { getLabs, createLab, deleteLab } from '../controllers/room.controller';
 
 const route = express.Router();
 

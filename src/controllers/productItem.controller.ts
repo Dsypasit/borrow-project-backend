@@ -8,16 +8,16 @@ import {
 const prisma = new PrismaClient();
 
 export async function getItems(req: Request, res: Response) {
-  const result = await prisma.productItems.findMany({
+  const result = await prisma.productItem.findMany({
     include: {
       transactions: {
         where: {
-          status: false,
+          isReturn: false,
         },
       },
-      lab: true,
+      room: true,
       source: true,
-      products: true,
+      product: true,
     },
   });
   res.json(result);
@@ -32,19 +32,19 @@ export async function getItemById(req: Request, res: Response) {
     return;
   }
 
-  const result = await prisma.productItems.findFirst({
+  const result = await prisma.productItem.findFirst({
     where: {
       id: Number(id),
     },
     include: {
       transactions: {
         where: {
-          status: false,
+          isReturn: false,
         },
       },
-      lab: true,
+      room: true,
       source: true,
-      products: true,
+      product: true,
     },
   });
   if (result === null) {
@@ -64,21 +64,21 @@ export async function getItemByProduct(req: Request, res: Response) {
     return;
   }
 
-  const result = await prisma.productItems.findMany({
+  const result = await prisma.productItem.findMany({
     where: {
-      products: {
+      product: {
         id: Number(id),
       },
     },
     include: {
       transactions: {
         where: {
-          status: false,
+          isReturn: false,
         },
       },
-      lab: true,
+      room: true,
       source: true,
-      products: true,
+      product: true,
     },
   });
   if (result === null) {
@@ -99,22 +99,22 @@ export async function getItemByProductAvailable(req: Request, res: Response) {
     return;
   }
 
-  const result = await prisma.productItems.findMany({
+  const result = await prisma.productItem.findMany({
     where: {
-      products: {
+      product: {
         id: Number(id),
       },
       transactions: {
         every: {
-          status: true,
+          isReturn: true,
         },
       },
     },
     include: {
       transactions: true,
-      lab: true,
+      room: true,
       source: true,
-      products: true,
+      product: true,
     },
   });
   if (result === null) {
@@ -128,29 +128,29 @@ export async function getItemByProductAvailable(req: Request, res: Response) {
 
 export async function createItem(req: Request, res: Response) {
   try {
-    const result = await prisma.productItems.create({
+    const result = await prisma.productItem.create({
       data: {
-        serial_no: req.body.serial_no,
-        source_id: req.body.source_id,
-        lab_id: req.body.lab_id,
-        products_id: req.body.products_id,
+        serialNumber: req.body.serialNumber,
+        sourceId: req.body.sourceId,
+        roomId: req.body.roomId,
+        productId: req.body.productId,
       },
       include: {
         transactions: true,
-        lab: true,
+        room: true,
         source: true,
-        products: true,
+        product: true,
       },
     });
-    await updateProductsAvailable(req.body.products_id);
-    await updateProductsTotal(req.body.products_id);
+    await updateProductsAvailable(req.body.productId);
+    await updateProductsTotal(req.body.productId);
     res.status(201).json(result);
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
       // The .code property can be accessed in a type-safe manner
       if (e.code === 'P2002') {
         res.json({
-          message: 'serial_no is duplicate, cannot create row',
+          message: 'Serial number is duplicate, can not create row',
         });
       }
     }
@@ -164,9 +164,9 @@ export async function deleteItem(req: Request, res: Response) {
       message: "can't delete item",
     });
   }
-  const result = await prisma.productItems.delete({
+  const result = await prisma.productItem.delete({
     where: { id: Number(id) },
   });
-  await updateProductsTotal(result.products_id);
+  await updateProductsTotal(result.productId);
   res.json(result);
 }

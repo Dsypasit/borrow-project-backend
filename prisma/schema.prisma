@@ -10,58 +10,60 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model ProductItems {
-  id            Int            @id @default(autoincrement())
-  serial_no     String         @unique
-  broken_status Boolean        @default(false)
-  source        Source         @relation(fields: [source_id], references: [id])
-  source_id     Int
-  lab           Lab            @relation(fields: [lab_id], references: [id])
-  lab_id        Int
-  products      Products       @relation(fields: [products_id], references: [id])
-  products_id   Int
-  transactions  Transactions[]
+model ProductItem {
+  id           Int           @id @default(autoincrement())
+  serialNumber String        @unique
+  isBroken     Boolean       @default(false)
+  source       Source        @relation(fields: [sourceId], references: [id])
+  sourceId     Int
+  room         Room          @relation(fields: [roomId], references: [id])
+  roomId       Int
+  product      Product       @relation(fields: [productId], references: [id])
+  productId    Int
+  transactions Transaction[]
 }
 
-model Lab {
-  id           Int            @id @default(autoincrement())
-  name         String         @unique
-  ProductItems ProductItems[]
+model Room {
+  id           Int           @id @default(autoincrement())
+  name         String        @unique
+  ProductItems ProductItem[]
 }
 
 model Source {
-  id           Int            @id @default(autoincrement())
-  name         String         @unique
-  ProductItems ProductItems[]
+  id           Int           @id @default(autoincrement())
+  name         String        @unique
+  ProductItems ProductItem[]
 }
 
-model Products {
-  id           Int            @id @default(autoincrement())
-  name         String         @unique
-  frequency    Int            @default(0)
-  total        Int            @default(0)
-  available    Int            @default(0)
-  ProductItems ProductItems[]
+model Product {
+  id              Int           @id @default(autoincrement())
+  name            String        @unique
+  image           String?
+  description     String?
+  totalAmount     Int           @default(0)
+  availableAmount Int           @default(0)
+  usageFrequency  Int           @default(0)
+  ProductItems    ProductItem[]
 }
 
-model Transactions {
-  id              Int          @id @default(autoincrement())
-  productItems    ProductItems @relation(fields: [productItems_id], references: [serial_no])
-  productItems_id String
-  status          Boolean      @default(false)
-  start_date      DateTime?    @default(now())
-  end_date        DateTime?
+model Transaction {
+  id              Int         @id @default(autoincrement())
+  productItem     ProductItem @relation(fields: [serialNumberRef], references: [serialNumber])
+  serialNumberRef String
+  isReturn        Boolean     @default(false)
+  startDate       DateTime?   @default(now())
+  endDate         DateTime?
   deadline        DateTime
   location        String
-  user            User         @relation(fields: [user_id], references: [id])
-  user_id         Int
+  user            User        @relation(fields: [userId], references: [id])
+  userId          Int
 }
 
 model User {
-  id           Int            @id @default(autoincrement())
+  id           Int           @id @default(autoincrement())
   role         String?
   email        String
   username     String?
-  phone        String
-  transactions Transactions[]
+  phoneNumber  String
+  transactions Transaction[]
 }
