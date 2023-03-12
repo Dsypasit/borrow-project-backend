@@ -26,7 +26,7 @@ export async function getProducts(req: Request, res: Response) {
   res.status(200).json(result);
 }
 
-export async function createProducts(req: Request, res: Response) {
+export async function createProduct(req: Request, res: Response) {
   if (!productVaild(req.body)) {
     res.status(400).json({
       message: 'create products error',
