@@ -12,16 +12,16 @@ export async function getTrans(req: Request, res: Response) {
   const { status } = req.query;
   if (status !== undefined && ['true', 'false'].includes(String(status))) {
     console.log(status);
-    const result = await prisma.transactions.findMany({
+    const result = await prisma.transaction.findMany({
       where: {
-        status: status === 'true',
+        isReturn: status === 'true',
       },
       include: {
         user: true,
-        productItems: {
+        productItem: {
           include: {
-            lab: true,
-            products: true,
+            room: true,
+            product: true,
             source: true,
           },
         },
@@ -30,13 +30,13 @@ export async function getTrans(req: Request, res: Response) {
     res.status(200).json(result);
     return;
   }
-  const result = await prisma.transactions.findMany({
+  const result = await prisma.transaction.findMany({
     include: {
       user: true,
-      productItems: {
+      productItem: {
         include: {
-          lab: true,
-          products: true,
+          room: true,
+          product: true,
           source: true,
         },
       },
@@ -54,16 +54,16 @@ export async function getTransById(req: Request, res: Response) {
     return;
   }
 
-  const result = await prisma.transactions.findFirst({
+  const result = await prisma.transaction.findFirst({
     where: {
       id: Number(id),
     },
     include: {
       user: true,
-      productItems: {
+      productItem: {
         include: {
-          lab: true,
-          products: true,
+          room: true,
+          product: true,
           source: true,
         },
       },
@@ -79,16 +79,16 @@ export async function getTransById(req: Request, res: Response) {
 }
 
 export async function getTransBorrowing(req: Request, res: Response) {
-  const result = await prisma.transactions.findMany({
+  const result = await prisma.transaction.findMany({
     where: {
-      status: false,
+      isReturn: false,
     },
     include: {
       user: true,
-      productItems: {
+      productItem: {
         include: {
-          lab: true,
-          products: true,
+          room: true,
+          product: true,
           source: true,
         },
       },
@@ -108,39 +108,39 @@ export async function createTrans(req: Request, res: Response) {
       user = await prisma.user.create({
         data: {
           email: req.body.email,
-          phone: req.body.phone,
+          phoneNumber: req.body.phoneNumber,
         },
       });
     }
 
-    const isBorrowing = await IsProductItemBorrowing(req.body.product_item_id);
+    const isBorrowing = await IsProductItemBorrowing(req.body.serialNumberRef);
     if (isBorrowing) {
       res.status(400).json({
         message: 'this product iteme is borrowing',
       });
       return;
     }
-    const result = await prisma.transactions.create({
+    const result = await prisma.transaction.create({
       data: {
-        user_id: user.id,
-        productItems_id: req.body.product_item_id,
+        userId: user.id,
+        serialNumberRef: req.body.serialNumberRef,
         location: req.body.location,
-        end_date: new Date(req.body.end_date),
+        endDate: new Date(req.body.endDate),
         deadline: new Date(req.body.deadline),
       },
       include: {
         user: true,
-        productItems: {
+        productItem: {
           include: {
-            lab: true,
-            products: true,
+            room: true,
+            product: true,
             source: true,
           },
         },
       },
     });
-    await updateProductsAvailable(result.productItems.products_id);
-    await updateProductsFrequency(result.productItems.products_id);
+    await updateProductsAvailable(result.productItem.productId);
+    await updateProductsFrequency(result.productItem.productId);
     res.status(201).json(result);
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
@@ -165,14 +165,14 @@ export async function checkStatus(req: Request, res: Response) {
       message: "can't check item",
     });
   }
-  const result = await prisma.transactions.findFirst({
+  const result = await prisma.transaction.findFirst({
     where: {
       id: Number(id),
     },
     select: {
       id: true,
       user: true,
-      status: true,
+      isReturn: true,
       deadline: true,
       location: true,
     },
@@ -191,18 +191,23 @@ export async function updateStatus(req: Request, res: Response) {
     });
   }
 
-  const result = await prisma.transactions.update({
+  const result = await prisma.transaction.update({
     where: { id: Number(id) },
     data: {
-      status: req.body.status,
-      end_date: req.body.status ? new Date() : null,
+      isReturn: req.body.status,
+      endDate: req.body.status ? new Date() : null,
     },
     include: {
-      productItems: true,
+      productItem: true,
     },
   });
+<<<<<<< HEAD
   await updateProductsAvailable(result.productItems.products_id);
   res.status(200).json(result);
+=======
+  await updateProductsAvailable(result.productItem.productId);
+  res.json(result);
+>>>>>>> 361acc7 (refactor: rename unmeaningful variables)
 }
 
 export async function deleteTrans(req: Request, res: Response) {
@@ -212,7 +217,7 @@ export async function deleteTrans(req: Request, res: Response) {
       message: "can't delete item",
     });
   }
-  const result = await prisma.transactions.delete({
+  const result = await prisma.transaction.delete({
     where: { id: Number(id) },
   });
   res.status(200).json(result);
