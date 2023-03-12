@@ -23,7 +23,7 @@ export async function getProductById(req: Request, res: Response) {
 
 export async function getProducts(req: Request, res: Response) {
   const result = await prisma.product.findMany();
-  res.json(result);
+  res.status(200).json(result);
 }
 
 export async function createProducts(req: Request, res: Response) {
