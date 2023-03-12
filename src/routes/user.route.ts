@@ -1,6 +1,6 @@
 import express from 'express';
 import {
-  getUserBorrowing,
+  getUsersNotReturn,
   getUserById,
   getUsers,
 } from '../controllers/user.controller';
@@ -8,7 +8,7 @@ import {
 const route = express.Router();
 
 route.get('/', getUsers);
-route.get('/borrowing', getUserBorrowing);
+route.get('/borrowing', getUsersNotReturn);
 route.get('/id/:id', getUserById);
 
 export default route;

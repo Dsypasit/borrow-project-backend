@@ -4,7 +4,7 @@ import {
   getProductById,
   createProduct,
   deleteProduct,
-  updateFrequency,
+  updateUsageFrequency,
 } from '../controllers/product.controller';
 
 const route = express.Router();
@@ -12,7 +12,7 @@ const route = express.Router();
 route.get('/', getProducts);
 route.get('/:id', getProductById);
 route.post('/', createProduct);
-route.put('/frequency/:id', updateFrequency);
+route.put('/frequency/:id', updateUsageFrequency);
 route.delete('/:id', deleteProduct);
 
 export default route;
