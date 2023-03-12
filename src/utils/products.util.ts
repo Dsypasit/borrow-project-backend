@@ -3,55 +3,55 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 export async function updateProductsTotal(id: number) {
-  const totalItem = await prisma.productItems.count({
+  const totalItem = await prisma.productItem.count({
     where: {
-      products: {
+      product: {
         id: id,
       },
     },
   });
 
-  await prisma.products.update({
+  await prisma.product.update({
     where: {
       id: id,
     },
     data: {
-      total: totalItem,
+      totalAmount: totalItem,
     },
   });
 }
 
 export async function updateProductsAvailable(id: number) {
-  const availableItem = await prisma.productItems.count({
+  const availableItem = await prisma.productItem.count({
     where: {
-      products: {
+      product: {
         id: id,
       },
       transactions: {
         every: {
-          status: true,
+          isReturn: true,
         },
       },
     },
   });
 
-  await prisma.products.update({
+  await prisma.product.update({
     where: {
       id: id,
     },
     data: {
-      available: availableItem,
+      availableAmount: availableItem,
     },
   });
 }
 
 export async function updateProductsFrequency(id: number) {
-  await prisma.products.update({
+  await prisma.product.update({
     where: {
       id: id,
     },
     data: {
-      frequency: {
+      usageFrequency: {
         increment: 1,
       },
     },
@@ -59,12 +59,12 @@ export async function updateProductsFrequency(id: number) {
 }
 
 export async function IsProductItemBorrowing(serial: string): Promise<boolean> {
-  const result = await prisma.productItems.findFirst({
+  const result = await prisma.productItem.findFirst({
     where: {
-      serial_no: String(serial),
+      serialNumber: String(serial),
       transactions: {
         some: {
-          status: false,
+          isReturn: false,
         },
       },
     },
