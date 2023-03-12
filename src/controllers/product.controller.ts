@@ -25,7 +25,7 @@ export async function getProducts(req: Request, res: Response) {
   res.json(result);
 }
 
-export async function createProducts(req: Request, res: Response) {
+export async function createProduct(req: Request, res: Response) {
   if (req.body.name === undefined) {
     res.json({
       message: 'create labs error',
