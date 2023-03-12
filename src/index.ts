@@ -1,5 +1,5 @@
 import express from 'express';
-import labRoute from './routes/room.route';
+import roomRoute from './routes/room.route';
 import sourceRoute from './routes/source.route';
 import productRoute from './routes/product.route';
 import productItemRoute from './routes/productItem.route';
@@ -10,7 +10,7 @@ const app = express();
 
 app.use(express.json());
 
-app.use('/lab', labRoute);
+app.use('/lab', roomRoute);
 app.use('/source', sourceRoute);
 app.use('/products', productRoute);
 app.use('/productItem', productItemRoute);
