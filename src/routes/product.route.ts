@@ -31,14 +31,14 @@ route.post('/', createProduct);
 route.put('/frequency/:id', updateUsageFrequency);
 route.post('/', createProduct);
 route.post(
-  '/image/:id',
+  '/:id/image',
   upload.single('product'),
   uploadProductImage,
   (e: Error, req: Request, res: Response, next: NextFunction) => {
     res.status(400).send({ e: e.message });
   },
 );
-route.post('/category/:id', addCategory);
+route.post('/:id/category', addCategory);
 route.put('/frequency/:id', updateUsageFrequency);
 route.delete('/:id', deleteProduct);
 

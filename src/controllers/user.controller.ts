@@ -98,12 +98,12 @@ export async function getUserNotReturnById(req: Request, res: Response) {
   res.json(result);
 }
 
-export async function getUserBorrowingById(req: Request, res: Response){
-  const { id } = req.params
-  if (id === undefined){
+export async function getUserBorrowingById(req: Request, res: Response) {
+  const { id } = req.params;
+  if (id === undefined) {
     res.json({
       message: "can't delete lab",
-    })
+    });
   }
 
   const result = await prisma.user.findFirst({
@@ -112,18 +112,18 @@ export async function getUserBorrowingById(req: Request, res: Response){
       transactions: {
         some: {
           isReturn: {
-            equals: false
-          }
-        }
-      }
+            equals: false,
+          },
+        },
+      },
     },
-    include:{
+    include: {
       transactions: {
         where: {
-          isReturn: false
-        }
-      }
-    }
-  })
-  res.json(result)
+          isReturn: false,
+        },
+      },
+    },
+  });
+  res.json(result);
 }

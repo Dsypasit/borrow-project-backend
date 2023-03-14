@@ -105,10 +105,10 @@ export async function addCategory(req: Request, res: Response) {
         id: Number(id),
       },
       data: {
-        Category: {
+        category: {
           connectOrCreate: {
             where: {
-              productId: Number(id),
+              title: req.body.title,
             },
             create: {
               title: req.body.title,
