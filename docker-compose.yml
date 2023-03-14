@@ -1,10 +1,16 @@
 version: '3.8'
 services:
-  postgres:
-    image: postgres:10.3
+  database:
+    image: bitnami/mongodb:4.4
     restart: always
-    environment:
-      - POSTGRES_USER=user
-      - POSTGRES_PASSWORD=password
     ports:
-      - '5432:5432'
+      - 27017:27017
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGODB_ROOT_PASSWORD=example
+      - MONGODB_USERNAME=paotharit
+      - MONGODB_PASSWORD=p123456
+      - MONGODB_DATABASE=borrowdb
+      - MONGODB_ADVERTISED_HOSTNAME=127.0.0.1
+      - MONGODB_REPLICA_SET_MODE=primary
+      - MONGODB_REPLICA_SET_KEY=replicasetkey123
