@@ -35,6 +35,13 @@ model Source {
   ProductItems ProductItem[]
 }
 
+model Category {
+  id        Int     @id @default(autoincrement())
+  title     String
+  product   Product @relation(fields: [productId], references: [id])
+  productId Int     @unique
+}
+
 model Product {
   id              Int           @id @default(autoincrement())
   name            String        @unique
@@ -44,6 +51,7 @@ model Product {
   availableAmount Int           @default(0)
   usageFrequency  Int           @default(0)
   ProductItems    ProductItem[]
+  Category        Category?
 }
 
 model Transaction {

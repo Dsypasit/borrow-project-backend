@@ -1,10 +1,4 @@
-import { error } from 'console';
-import express, {
-  ErrorRequestHandler,
-  NextFunction,
-  Request,
-  Response,
-} from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import multer from 'multer';
 import {
   getProducts,
@@ -13,6 +7,7 @@ import {
   deleteProduct,
   updateUsageFrequency,
   uploadProductImage,
+  addCategory,
 } from '../controllers/product.controller';
 
 const upload = multer({
@@ -43,6 +38,7 @@ route.post(
     res.status(400).send({ e: e.message });
   },
 );
+route.post('/category/:id', addCategory);
 route.put('/frequency/:id', updateUsageFrequency);
 route.delete('/:id', deleteProduct);
 

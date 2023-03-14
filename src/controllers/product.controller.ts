@@ -95,3 +95,31 @@ export async function uploadProductImage(req: Request, res: Response) {
     res.status(400).send({ error: e.message });
   }
 }
+
+export async function addCategory(req: Request, res: Response) {
+  const { id } = req.params;
+
+  try {
+    const product = await prisma.product.update({
+      where: {
+        id: Number(id),
+      },
+      data: {
+        Category: {
+          connectOrCreate: {
+            where: {
+              productId: Number(id),
+            },
+            create: {
+              title: req.body.title,
+            },
+          },
+        },
+      },
+    });
+
+    res.status(200).json(product);
+  } catch (e: any) {
+    res.status(400).send({ error: e.message });
+  }
+}
