@@ -75,3 +75,12 @@ model User {
   phoneNumber  String
   transactions Transaction[]
 }
+
+model Admin {
+  id       Int     @id @default(autoincrement())
+  name     String
+  role     String  @default("Staff")
+  email    String  @unique
+  password String
+  phone    String?
+}
