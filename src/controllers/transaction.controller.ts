@@ -1,14 +1,14 @@
 import { Prisma, PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
 import {
-  IsProductItemBorrowing,
-  updateProductsAvailable,
-  updateProductsFrequency,
-} from '../utils/products.util';
+  IsProductItemBorrowed,
+  updateProductAvailableAmount,
+  updateProductUsageFrequency,
+} from '../utils/product.util';
 
 const prisma = new PrismaClient();
 
-export async function getTrans(req: Request, res: Response) {
+export async function getTransactions(req: Request, res: Response) {
   const { status } = req.query;
   if (status !== undefined && ['true', 'false'].includes(String(status))) {
     console.log(status);
@@ -45,7 +45,7 @@ export async function getTrans(req: Request, res: Response) {
   res.status(200).json(result);
 }
 
-export async function getTransById(req: Request, res: Response) {
+export async function getTransactionById(req: Request, res: Response) {
   const { id } = req.params;
   if (id === undefined) {
     res.status(400).json({
@@ -78,7 +78,7 @@ export async function getTransById(req: Request, res: Response) {
   res.status(200).json(result);
 }
 
-export async function getTransBorrowing(req: Request, res: Response) {
+export async function getTransactionBorrowed(req: Request, res: Response) {
   const result = await prisma.transaction.findMany({
     where: {
       isReturn: false,
@@ -97,7 +97,7 @@ export async function getTransBorrowing(req: Request, res: Response) {
   res.status(200).json(result);
 }
 
-export async function createTrans(req: Request, res: Response) {
+export async function createTransaction(req: Request, res: Response) {
   try {
     let user = await prisma.user.findFirst({
       where: {
@@ -114,7 +114,7 @@ export async function createTrans(req: Request, res: Response) {
       });
     }
 
-    const isBorrowing = await IsProductItemBorrowing(req.body.serialNumberRef);
+    const isBorrowing = await IsProductItemBorrowed(req.body.serialNumberRef);
     if (isBorrowing) {
       res.status(400).json({
         message: 'this product iteme is borrowing',
@@ -140,8 +140,8 @@ export async function createTrans(req: Request, res: Response) {
         },
       },
     });
-    await updateProductsAvailable(result.productItem.productId);
-    await updateProductsFrequency(result.productItem.productId);
+    await updateProductAvailableAmount(result.productItem.productId);
+    await updateProductUsageFrequency(result.productItem.productId);
     res.status(201).json(result);
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
@@ -159,7 +159,7 @@ export async function createTrans(req: Request, res: Response) {
   }
 }
 
-export async function checkStatus(req: Request, res: Response) {
+export async function checkReturnStatus(req: Request, res: Response) {
   const { id } = req.params;
   if (id === undefined) {
     res.status(400).json({
@@ -184,7 +184,7 @@ export async function checkStatus(req: Request, res: Response) {
   res.status(200).json(result);
 }
 
-export async function updateStatus(req: Request, res: Response) {
+export async function updateReturnStatus(req: Request, res: Response) {
   const { id } = req.params;
   if (id === undefined) {
     res.status(400).json({
@@ -195,18 +195,18 @@ export async function updateStatus(req: Request, res: Response) {
   const result = await prisma.transaction.update({
     where: { id },
     data: {
-      isReturn: req.body.status,
-      endDate: req.body.status ? new Date() : null,
+      isReturn: req.body.isReturn,
+      endDate: req.body.isReturn ? new Date() : null,
     },
     include: {
       productItem: true,
     },
   });
-  await updateProductsAvailable(result.productItem.productId);
+  await updateProductAvailableAmount(result.productItem.productId);
   res.status(200).json(result);
 }
 
-export async function deleteTrans(req: Request, res: Response) {
+export async function deleteTransaction(req: Request, res: Response) {
   const { id } = req.params;
   if (id === undefined) {
     res.status(400).json({

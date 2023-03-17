@@ -1,21 +1,32 @@
 import { Prisma, PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
 import {
-  updateProductsAvailable,
-  updateProductsTotal,
-} from '../utils/products.util';
+  updateProductAvailableAmount,
+  updateProductTotalAmount,
+} from '../utils/product.util';
 import { queryProductItem } from '../utils/productItem.util';
 
 const prisma = new PrismaClient();
 
 export async function getItems(req: Request, res: Response) {
+  const query = queryProductItem(req.query);
+  if (Object.keys(query).length !== 0) {
+    console.log(query);
+    const result = await prisma.productItem.findMany({
+      where: query,
+      include: {
+        transactions: true,
+        room: true,
+        source: true,
+        product: true,
+      },
+    });
+    res.status(200).json(result);
+    return;
+  }
   const result = await prisma.productItem.findMany({
     include: {
-      transactions: {
-        where: {
-          isReturn: false,
-        },
-      },
+      transactions: true,
       room: true,
       source: true,
       product: true,
@@ -143,8 +154,8 @@ export async function createItem(req: Request, res: Response) {
         product: true,
       },
     });
-    await updateProductsAvailable(req.body.productId);
-    await updateProductsTotal(req.body.productId);
+    await updateProductAvailableAmount(req.body.productId);
+    await updateProductTotalAmount(req.body.productId);
     res.status(201).json(result);
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
@@ -168,6 +179,6 @@ export async function deleteItem(req: Request, res: Response) {
   const result = await prisma.productItem.delete({
     where: { id },
   });
-  await updateProductsTotal(result.productId);
+  await updateProductTotalAmount(result.productId);
   res.status(200).json(result);
 }

@@ -1,20 +1,26 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Prisma } from '@prisma/client';
+import fs from 'fs';
+import bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
 
-async function createLab() {
-  const labs = ['Lab A', 'Lab B', 'Lab C'];
-  for (const lab of labs) {
-    await prisma.room.upsert({
-      where: {
-        name: lab,
-      },
-      update: {},
-      create: {
-        name: lab,
-      },
-    });
-  }
+async function createOneAdmin() {
+  let password = '123456';
+  password = await bcrypt.hash(password, 10);
+  await prisma.admin.create({
+    data: {
+      name: 'Paopao',
+      role: 'Admin',
+      email: 'admin@email.kmutnb.ac.th',
+      password: password,
+    },
+  });
+}
+
+async function createRoom() {
+  await prisma.room.createMany({
+    data: [{ name: 'room1' }, { name: 'room2' }, { name: 'room3' }],
+  });
 }
 
 async function createSource() {
@@ -47,10 +53,100 @@ async function createProducts() {
   }
 }
 
+async function checkSource(s: any) {
+  let source = await prisma.source.findFirst({
+    where: {
+      name: s,
+    },
+  });
+  if (source === null) {
+    source = await prisma.source.create({
+      data: {
+        name: s,
+      },
+    });
+  }
+  return source;
+}
+
+async function checkProduct(p: any) {
+  let product = await prisma.product.findFirst({
+    where: {
+      name: p,
+    },
+  });
+  if (product === null) {
+    product = await prisma.product.create({
+      data: {
+        name: p,
+      },
+    });
+  }
+  return product;
+}
+
+// async function checkRoom(r: any) {
+//   let room = await prisma.room.findFirst({
+//     where: {
+//       name: r,
+//     },
+//   });
+//   if (room === null) {
+//     room = await prisma.room.create({
+//       data: {
+//         name: r,
+//       },
+//     });
+//   }
+//   return room;
+// }
+
+// async function checkCategory(s:any){
+//   let source = await prisma.source.findFirst({
+//     where: {
+//       name: s,
+//     }
+//   });
+//   if (source === null){
+//     source = await prisma.source.create({
+//       data:{
+//         name: s
+//       }
+//     })
+//   }
+//   return source
+// }
+
+async function createProductItems() {
+  const data = JSON.parse(fs.readFileSync('prisma/data.json', 'utf8'));
+  for (let i = 0; i < data.length; i++) {
+    const source = await checkSource(data[i].source);
+    const product = await checkProduct(data[i].Product);
+    console.log(i);
+    try {
+      await prisma.productItem.create({
+        data: {
+          serialNumber: String(data[i].serialRef),
+          productId: product?.id,
+          sourceId: source?.id,
+        },
+      });
+    } catch (e) {
+      if (e instanceof Prisma.PrismaClientKnownRequestError) {
+        if (e.code === 'P2002') {
+          continue;
+        }
+      }
+    }
+  }
+}
+
 async function main() {
-  await createLab();
+  await createRoom();
   await createSource();
   await createProducts();
+  await createProductItems();
+  await createOneAdmin();
 }
 main()
   .catch((e) => console.error(e))

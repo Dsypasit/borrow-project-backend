@@ -1,23 +1,23 @@
 import express from 'express';
 import {
-  getTrans,
-  getTransById,
-  createTrans,
-  deleteTrans,
-  updateStatus,
-  checkStatus,
-  getTransBorrowing,
+  getTransactions,
+  getTransactionById,
+  createTransaction,
+  deleteTransaction,
+  updateReturnStatus,
+  checkReturnStatus,
+  getTransactionBorrowed,
 } from '../controllers/transaction.controller';
 
 const route = express.Router();
 
-route.get('/', getTrans);
-route.get('/id/:id', getTransById);
-route.get('/borrowing', getTransBorrowing);
-route.post('/', createTrans);
-route.delete('/:id', deleteTrans);
+route.get('/', getTransactions);
+route.get('/id/:id', getTransactionById);
+route.get('/borrowing', getTransactionBorrowed);
+route.post('/', createTransaction);
+route.delete('/:id', deleteTransaction);
 
-route.get('/status/:id', checkStatus);
-route.put('/status/:id', updateStatus);
+route.get('/status/:id', checkReturnStatus);
+route.put('/status/:id', updateReturnStatus);
 
 export default route;

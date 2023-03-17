@@ -46,9 +46,39 @@ export async function getUserById(req: Request, res: Response) {
   res.json(result);
 }
 
-export async function getUserBorrowing(req: Request, res: Response) {
+export async function getUsersNotReturn(req: Request, res: Response) {
   const result = await prisma.user.findMany({
     where: {
+      transactions: {
+        some: {
+          isReturn: {
+            equals: false,
+          },
+        },
+      },
+    },
+    include: {
+      transactions: {
+        where: {
+          isReturn: false,
+        },
+      },
+    },
+  });
+  res.json(result);
+}
+
+export async function getUserNotReturnById(req: Request, res: Response) {
+  const { id } = req.params;
+  if (id === undefined) {
+    res.json({
+      message: "can't delete lab",
+    });
+  }
+
+  const result = await prisma.user.findFirst({
+    where: {
+      id: id,
       transactions: {
         some: {
           isReturn: {

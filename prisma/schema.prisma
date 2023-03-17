@@ -26,13 +26,19 @@ model ProductItem {
 model Room {
   id           String        @id @default(auto()) @map("_id") @db.ObjectId
   name         String        @unique
-  ProductItems ProductItem[]
+  productItems ProductItem[]
 }
 
 model Source {
   id           String        @id @default(auto()) @map("_id") @db.ObjectId
   name         String        @unique
-  ProductItems ProductItem[]
+  productItems ProductItem[]
+}
+
+model Category {
+  id       String    @id @default(auto()) @map("_id") @db.ObjectId
+  title    String    @unique
+  products Product[]
 }
 
 model Product {
@@ -42,8 +48,10 @@ model Product {
   usageFrequency  Int           @default(0)
   totalAmount     Int           @default(0)
   availableAmount Int           @default(0)
+  productItems    ProductItem[]
+  category        Category?     @relation(fields: [categoryId], references: [id])
+  categoryId      String?       @db.ObjectId
   image           String?
-  ProductItems    ProductItem[]
 }
 
 model Transaction {

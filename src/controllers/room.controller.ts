@@ -6,12 +6,12 @@ const prisma = new PrismaClient();
 
 export async function getRooms(req: Request, res: Response) {
   const rooms = await prisma.room.findMany();
-  res.json(rooms);
+  res.status(200).json(rooms);
 }
 
 export async function createRoom(req: Request, res: Response) {
   if (req.body.name === undefined) {
-    res.json({
+    res.status(400).json({
       message: 'create room error',
       body: req.body,
     });

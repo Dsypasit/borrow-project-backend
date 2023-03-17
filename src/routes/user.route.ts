@@ -1,16 +1,16 @@
 import express from 'express';
 import {
-  getUserBorrowing,
-  getUserBorrowingById,
+  getUsersNotReturn,
   getUserById,
+  getUserNotReturnById,
   getUsers,
 } from '../controllers/user.controller';
 
 const route = express.Router();
 
 route.get('/', getUsers);
-route.get('/borrowing', getUserBorrowing);
-route.get('/borrowing/:id', getUserBorrowingById);
+route.get('/borrowing', getUsersNotReturn);
+route.get('/borrowing/:id', getUserNotReturnById);
 route.get('/id/:id', getUserById);
 
 export default route;
