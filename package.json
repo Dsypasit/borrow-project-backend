@@ -9,9 +9,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "npx nodemon src/index.ts",
-    "seed": "npx ts-node prisma/seed.ts",
+    "seed": "npx prisma db seed",
     "migrate": "npx prisma migrate dev --name init",
-    "start:migrate:prod": "npm run migrate && npm run seed && npm run start"
+    "start:migrate:prod": "npm run seed && npm run start"
   },
   "keywords": [],
   "author": "",
