@@ -6,6 +6,7 @@ import productItemRoute from './routes/productItem.route';
 import transactionRoute from './routes/transaction.route';
 import userRoute from './routes/user.route';
 import authRoute from './routes/auth.route';
+import categoryRoute from './routes/category.route';
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.use('/productItem', productItemRoute);
 app.use('/transaction', transactionRoute);
 app.use('/user', userRoute);
 app.use('/admin', authRoute);
+app.use('/category', categoryRoute);
 
 app.listen(3000, () =>
   console.log('REST API server ready at: http://localhost:3000'),
