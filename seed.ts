@@ -39,32 +39,17 @@ async function checkSource(s: any) {
   return source;
 }
 
-async function checkProduct(p: any, cid: any) {
+async function checkProduct(p: any, categoryId: any) {
   let product = await prisma.product.findFirst({
     where: {
       name: p,
     },
   });
-
-  // bad code. fix it!
-  if (cid === null) {
+  if (product === null, categoryId !== null) {
     product = await prisma.product.create({
       data: {
         name: p,
-      },
-    });
-    return product;
-  }
-
-  if (product === null) {
-    product = await prisma.product.create({
-      data: {
-        name: p,
-        category: {
-          connect: {
-            id: cid,
-          },
-        },
+        categoryId: Number(categoryId),
       },
     });
   }
@@ -72,15 +57,12 @@ async function checkProduct(p: any, cid: any) {
 }
 
 async function checkCategory(s: any) {
-  if (s === null) {
-    return null;
-  }
   let result = await prisma.category.findFirst({
     where: {
       title: s,
     },
   });
-  if (result === null) {
+  if (result === null && s !== null) {
     result = await prisma.category.create({
       data: {
         title: s,
