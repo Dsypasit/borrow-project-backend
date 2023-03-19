@@ -1,14 +1,14 @@
-export function queryProductItem(query: any): object {
-  const { sourceId, roomId, productId } = query;
-  let result = {};
-  if (sourceId) {
-    result = { ...result, source_id: Number(sourceId) };
+export function queryProductItem(query: any): Object{
+  const { sourceId, roomId, productId } = query
+  let result = {}
+  if (sourceId){
+    result = {...result, sourceId: Number(sourceId)}
   }
-  if (roomId) {
-    result = { ...result, lab_id: Number(roomId) };
+  if (roomId){
+    result = {...result, roomId: Number(roomId)}
   }
-  if (productId) {
-    result = { ...result, products_id: Number(productId) };
+  if (productId){
+    result = {...result, productId: Number(productId)}
   }
   return result;
 }
