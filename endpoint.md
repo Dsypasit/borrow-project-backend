@@ -835,3 +835,114 @@ PUT /transaction/status/:id
     }
 }
 ```
+
+# Authentication
+
+GET /admin
+
+<!-- response -->
+
+"Admin not found"
+
+- must login before query
+
+```json
+// response
+{
+  "result": [
+    {
+      "id": "64148c10e156dddf2735d3d6",
+      "name": "Paopao",
+      "role": "Admin",
+      "email": "admin@email.kmutnb.ac.th",
+      "password": "$2b$10$mWF/Ht4Ikfk0BT0y0AwnqenXTQ/sOAq/HmRC4tQve5gcP9cR0wtCy",
+      "phone": null
+    }
+  ]
+}
+```
+
+POST /admin
+
+```json
+// request
+{
+    "email": "admin@email.kmutnb.ac.th",
+    "password": "123456"
+}
+
+
+// response
+{
+    "user": {
+        "id": "64148c10e156dddf2735d3d6",
+        "name": "Paopao",
+        "role": "Admin",
+        "email": "admin@email.kmutnb.ac.th",
+        "password": "$2b$10$mWF/Ht4Ikfk0BT0y0AwnqenXTQ/sOAq/HmRC4tQve5gcP9cR0wtCy",
+        "phone": null
+    },
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0MTQ4YzEwZTE1NmRkZGYyNzM1ZDNkNiIsImlhdCI6MTY3OTIzMzI2MywiZXhwIjoxNjc5MjM2ODYzfQ.xwNjkG2Og7XlWrhyblWD2J2pUq5qXtkZl54YAWDRQJs"
+}
+
+```
+
+POST /admin/addadmin
+
+```json
+// request
+{
+    "email": "paoinwza009@gmail.com",
+    "password": "p123456",
+    "name": "tharito Ansure"
+}
+
+
+// response
+{
+    "newAdmin": {
+        "id": "6417118351188a554bd43194",
+        "name": "tharito Ansure",
+        "role": "Staff",
+        "email": "paoinwza010@gmail.com",
+        "password": "$2b$10$dKPW5z6tiI6bxCMpmu2kvuQ29le47MNd8THFEyR4ABYOroCu2Ut2u",
+        "phone": null
+    }
+}
+```
+
+DELETE /admin/:id
+
+```json
+// response
+{
+  "id": "6417118351188a554bd43194",
+  "name": "tharito Ansure",
+  "role": "Staff",
+  "email": "paoinwza010@gmail.com",
+  "password": "$2b$10$dKPW5z6tiI6bxCMpmu2kvuQ29le47MNd8THFEyR4ABYOroCu2Ut2u",
+  "phone": null
+}
+```
+
+PUT /admin
+
+```json
+// request
+{
+    "name": "Tharitoooo",
+    "role" : "Admin",
+    "password": "p123456",
+    "phone": "099999999"
+}
+
+// response
+{
+    "id": "64148c10e156dddf2735d3d6",
+    "name": "Tharitoooo",
+    "role": "Admin",
+    "email": "admin@email.kmutnb.ac.th",
+    "password": "$2b$10$JnDplqLcVErCj3Oo/HVnVumWeP1IoSZZOFrua4RTrzS0Te2ERYnta",
+    "phone": "099999999"
+}
+```
