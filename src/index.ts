@@ -6,10 +6,12 @@ import productItemRoute from './routes/productItem.route';
 import transactionRoute from './routes/transaction.route';
 import userRoute from './routes/user.route';
 import authRoute from './routes/auth.route';
+import cors from 'cors';
 
 const app = express();
 
 app.use(express.json());
+app.use(cors())
 
 app.use('/lab', roomRoute);
 app.use('/source', sourceRoute);
