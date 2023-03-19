@@ -6,6 +6,7 @@ import productItemRoute from './routes/productItem.route';
 import transactionRoute from './routes/transaction.route';
 import userRoute from './routes/user.route';
 import authRoute from './routes/auth.route';
+import categoryRoute from './routes/category.route';
 import cors from 'cors';
 
 const app = express();
@@ -19,6 +20,7 @@ app.use('/products', productRoute);
 app.use('/productItem', productItemRoute);
 app.use('/transaction', transactionRoute);
 app.use('/user', userRoute);
+app.use('/category', categoryRoute);
 app.use('/admin', authRoute);
 
 app.listen(3000, () =>
