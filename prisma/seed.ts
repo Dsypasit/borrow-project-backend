@@ -1,7 +1,21 @@
 import { PrismaClient, Prisma } from '@prisma/client';
 import fs from 'fs';
+import bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
+
+async function createOneAdmin() {
+  let password = '123456';
+  password = await bcrypt.hash(password, 10);
+  await prisma.admin.create({
+    data: {
+      name: 'Paopao',
+      role: 'Admin',
+      email: 'admin@email.kmutnb.ac.th',
+      password: password,
+    },
+  });
+}
 
 async function createRoom() {
   await prisma.room.createMany({
@@ -46,17 +60,16 @@ async function checkProduct(p: any, cid: any) {
     },
   });
 
-  // bad code. fix it!
-  if (cid === null) {
-    product = await prisma.product.create({
-      data: {
-        name: p,
-      },
-    });
-    return product;
-  }
-
   if (product === null) {
+    // bad code. fix it!
+    if (cid === null || cid === undefined) {
+      product = await prisma.product.create({
+        data: {
+          name: p,
+        },
+      });
+      return product;
+    }
     product = await prisma.product.create({
       data: {
         name: p,
@@ -72,7 +85,7 @@ async function checkProduct(p: any, cid: any) {
 }
 
 async function checkCategory(s: any) {
-  if (s === null) {
+  if (s === null || s === undefined) {
     return null;
   }
   let result = await prisma.category.findFirst({
@@ -121,6 +134,7 @@ async function main() {
   await createSource();
   await createProducts();
   await createProductItems();
+  await createOneAdmin();
 }
 
 main()
