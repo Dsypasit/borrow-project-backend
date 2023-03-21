@@ -1,6 +1,10 @@
 import { PrismaClient, Prisma } from '@prisma/client';
 import fs from 'fs';
 import bcrypt from 'bcrypt';
+import {
+  updateProductsAvailable,
+  updateProductsTotal,
+} from '../src/utils/products.util';
 
 const prisma = new PrismaClient();
 
@@ -39,7 +43,8 @@ async function createSource() {
 }
 
 async function createProducts() {
-  const products = ['Calculator', 'Telescope'];
+  const data = JSON.parse(fs.readFileSync('prisma/image.json', 'utf8'));
+  const products = ['โต๊ะคอมพิวเตอร์', 'ตู้ไม้เก็บเอกสาร'];
   for (const product of products) {
     await prisma.product.upsert({
       where: {
@@ -48,6 +53,7 @@ async function createProducts() {
       update: {},
       create: {
         name: product,
+        image: product === 'โต๊ะคอมพิวเตอร์' ? data[0].image : data[1].image,
       },
     });
   }
@@ -76,17 +82,16 @@ async function checkProduct(p: any, cid: any) {
     },
   });
 
-  // bad code. fix it!
-  if (cid === null) {
-    product = await prisma.product.create({
-      data: {
-        name: p,
-      },
-    });
-    return product;
-  }
-
   if (product === null) {
+    // bad code. fix it!
+    if (cid === null || cid === undefined) {
+      product = await prisma.product.create({
+        data: {
+          name: p,
+        },
+      });
+      return product;
+    }
     product = await prisma.product.create({
       data: {
         name: p,
@@ -144,13 +149,15 @@ async function createProductItems() {
     const product = await checkProduct(data[i].Product, category?.id);
     console.log(i);
     try {
-      await prisma.productItem.create({
+      const pp = await prisma.productItem.create({
         data: {
           serialNumber: String(data[i].serialRef),
           productId: product?.id,
           sourceId: source?.id,
         },
       });
+      await updateProductsTotal(pp.productId);
+      await updateProductsAvailable(pp.productId);
     } catch (e) {
       if (e instanceof Prisma.PrismaClientKnownRequestError) {
         if (e.code === 'P2002') {
