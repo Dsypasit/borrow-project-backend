@@ -17,7 +17,7 @@ COPY tsconfig.json ./
 # COPY
 COPY . .
 
-EXPOSE 3000
+EXPOSE 3001
 
 RUN npx prisma generate
 

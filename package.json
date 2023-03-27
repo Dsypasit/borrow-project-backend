@@ -8,10 +8,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npx ts-node src/index.ts",
+    "start": "PORT=3001 npx ts-node src/index.ts",
     "seed": "npx ts-node prisma/seed.ts",
     "migrate": "npx prisma migrate dev --name init",
-    "start:migrate:prod": "npm run migrate && npm run seed && npm run start"
+    "start:migrate:prod": "npm run migrate && npm run start"
   },
   "keywords": [],
   "author": "",
